@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".App.RegisterActivity">
+
+    <include layout="@layout/toolbar"/>
+
+    <RelativeLayout
+        android:id="@id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/register_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/username"
+            android:layout_alignParentTop="true"
+            android:maxLength="30"
+            android:inputType="textCapSentences|textAutoComplete"/>
+
+        <EditText
+            android:id="@+id/register_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password"
+            android:maxLength="200"
+            android:layout_below="@+id/register_username"
+            android:inputType="textPassword"/>
+
+        <EditText
+            android:id="@+id/register_repeat_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/repeat_password"
+            android:maxLength="200"
+            android:layout_below="@+id/register_password"
+            android:inputType="textPassword"/>
+
+        <CheckBox
+            android:id="@+id/register_auto_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/register_repeat_password"
+            android:text="@string/auto_login_after_registration"
+            android:layout_marginTop="10dp"/>
+
+        <CheckBox
+            android:id="@+id/register_keep_logged_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/register_auto_login"
+            android:text="@string/keep_logged_in"
+            android:enabled="false"/>
+
+        <ProgressBar
+            android:id="@+id/register_in_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/register_keep_logged_in"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/register_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/register"
+            android:layout_alignParentBottom="true"
+            android:textColor="@color/colorPrimary"
+            android:enabled="false"/>
+
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#a10027</color>
+    <color name="colorPrimaryDark">#8f0023</color>
+    <color name="colorAccent">#a10027</color>
+
+    <color name="white">#FFF</color>
+    <color name="black">#000</color>
+    <color name="red">#F00</color>
+    <color name="green">#0F0</color>
+    <color name="black_transparent">#66000000</color>
+    <color name="transparent">#0000</color>
+    <color name="grey">#7B000000</color>
+    <color name="grey_light">#BBB</color>
+    <color name="white_dark">#f1f1f1</color>
+
+    <color name="locked">#13ba42</color>
+    <color name="unlocked">#d7860d</color>
+    <color name="stolen">#bf0f0f</color>
+
+</resources>

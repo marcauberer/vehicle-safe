@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/menu_top"
+        android:orderInCategory="1"
+        android:checkableBehavior="single" >
+        <item
+            android:id="@+id/drawer_item_device_manager"
+            android:title="@string/device_mgmt"
+            android:icon="@drawable/memory_white"
+            android:orderInCategory="1"
+            android:checked="true"/>
+
+        <item
+            android:id="@+id/drawer_item_map"
+            android:title="@string/map"
+            android:icon="@drawable/map"
+            android:orderInCategory="2"/>
+    </group>
+
+    <group
+        android:id="@+id/menu_vehicles"
+        android:orderInCategory="2"
+        android:checkableBehavior="single" />
+
+    <group
+        android:id="@+id/menu_bottom"
+        android:orderInCategory="3"
+        android:checkableBehavior="single" >
+
+        <item
+            android:id="@+id/drawer_item_settings"
+            android:title="@string/settings"
+            android:icon="@drawable/settings_white"
+            android:orderInCategory="1000"
+            android:checked="false"/>
+    </group>
+</menu>

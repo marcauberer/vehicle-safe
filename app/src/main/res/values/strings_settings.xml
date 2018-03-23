@@ -1,0 +1,72 @@
+<resources>
+    <!-- General Settings -->
+    <string name="pref_header_general">Allgemein</string>
+    <string name="pref_general_start_page">Startseite</string>
+    <string-array name="pref_start_page">
+        <item>Geräteverwaltung</item>
+        <item>Große Karte</item>
+        <item>Letztes Gerät</item>
+    </string-array>
+    <string-array name="pref_start_page_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string name="pref_general_map_type">Standard Kartentyp</string>
+    <string-array name="pref_map_type">
+        <item>Normale Karte</item>
+        <item>Landschaft</item>
+        <item>Satellit</item>
+        <item>Hybrid-Karte</item>
+    </string-array>
+    <string-array name="pref_map_type_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <!-- Tracking Settings -->
+    <string name="pref_header_tracking">Positionsverfolgung</string>
+    <string name="pref_tracking_own_position_interval_t">Abfrageintervall der eigenen Position</string>
+
+    <!-- Account Settings -->
+    <string name="pref_header_account">Account-Einstellungen</string>
+    <string name="pref_change_pw_t">Passwort ändern</string>
+    <string name="pref_change_pw_m">Passwort des aktiven Accounts ändern</string>
+    <string name="pref_delete_acc_t">Account löschen</string>
+    <string name="pref_delete_acc_m">Aktiven Account löschen</string>
+    <string name="not_all_fields_filled">Nicht alle Felder gefüllt</string>
+    <string name="old_password">Altes Passwort</string>
+    <string name="new_password">Neues Passwort</string>
+    <string name="new_password_confirm">Neues Passwort bestätigen</string>
+    <string name="delete_acc_q">Wollen Sie Ihren Account wirklich unwiederruflich löschen?</string>
+    <string name="changed_password_successfully">Ihr Passwort wurde erfolgreich geändert</string>
+    <string name="account_deleted_successfully">Ihr Account wurde erfolgreich gelöscht</string>
+
+    <!-- About Settings -->
+    <string name="pref_header_about">Über VehicleSafe</string>
+    <string name="pref_serverinfo_t">Serverinfo</string>
+    <string name="pref_serverinfo_downloading_">Serverinfo wird heruntergeladen ...</string>
+    <string name="pref_opensource_t">Open-Source-Lizenzen</string>
+    <string name="pref_opensource_m">Lizenzdetails für Open-Source-Software</string>
+    <string name="pref_appversion">App-Version</string>
+    <string name="pref_developers_t">Die Entwickler</string>
+    <string name="pref_developers_m">M&amp;R Games</string>
+    <string name="pref_more_apps_t">Mehr Apps von uns</string>
+    <string name="pref_more_apps_m">Unsere Playstore-Seite</string>
+    <string name="client_name">Client-Name</string>
+    <string name="server_state">Serverstatus</string>
+    <string name="min_app_version">Minimalversion</string>
+    <string name="newest_app_version">Neueste Version</string>
+    <string name="owners">Serverinhaber</string>
+    <string name="support_url">Support-Url</string>
+    <string name="serverstate_1">Server ist online</string>
+    <string name="serverstate_2">Server ist offline</string>
+    <string name="serverstate_3">Server wird gewartet</string>
+    <string name="serverstate_4">App wird nicht mehr unterstützt</string>
+    <string name="serverstate_1_short">Online</string>
+    <string name="serverstate_2_short">Offline</string>
+    <string name="serverstate_3_short">Wird gewartet</string>
+    <string name="serverstate_4_short">Nicht mehr unterstützt</string>
+</resources>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/item_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="65dp"
+    android:background="?selectableItemBackground"
+    android:clickable="true"
+    android:padding="5dp">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/item_image"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        app:srcCompat="@drawable/directions_bike"
+        android:tint="@color/colorPrimary"
+        android:padding="10dp"/>
+
+    <TextView
+        android:id="@+id/item_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_toRightOf="@+id/item_image"
+        android:textColor="@color/colorPrimary"
+        android:text="@string/loading"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="8dp"/>
+
+    <TextView
+        android:id="@+id/item_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/item_name"
+        android:layout_below="@+id/item_name"
+        android:text="@string/loading"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"/>
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/item_edit"
+        android:layout_width="31dp"
+        android:layout_height="31dp"
+        android:padding="3dp"
+        android:layout_margin="3dp"
+        app:srcCompat="@drawable/edit_black"
+        android:tint="@color/colorPrimary"
+        android:layout_toLeftOf="@+id/item_delete"
+        android:background="?selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:layout_centerVertical="true"/>
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/item_delete"
+        android:layout_width="31dp"
+        android:layout_height="31dp"
+        android:padding="3dp"
+        android:layout_margin="3dp"
+        app:srcCompat="@drawable/delete_red"
+        android:tint="@color/colorPrimary"
+        android:layout_alignParentRight="true"
+        android:background="?selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:layout_centerVertical="true"/>
+</RelativeLayout>

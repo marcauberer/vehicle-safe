@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_center_device_pos"
+        android:title="@string/center_device_position"
+        android:icon="@drawable/directions_car"
+        android:orderInCategory="10"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_center_own_pos"
+        android:title="@string/center_own_position"
+        android:icon="@drawable/location_white"
+        android:orderInCategory="50"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_maptype_normal"
+        android:title="@string/maptype_normal"
+        android:orderInCategory="100"/>
+
+    <item
+        android:id="@+id/action_maptype_terrain"
+        android:title="@string/maptype_terrain"
+        android:orderInCategory="200"/>
+
+    <item
+        android:id="@+id/action_maptype_satellite"
+        android:title="@string/maptype_satellite"
+        android:orderInCategory="300"/>
+
+    <item
+        android:id="@+id/action_maptype_hybrid"
+        android:title="@string/maptype_hybrid"
+        android:orderInCategory="400"/>
+</menu>

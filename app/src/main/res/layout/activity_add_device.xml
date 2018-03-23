@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".App.AddDeviceActivity">
+
+    <include layout="@layout/toolbar"/>
+
+    <RelativeLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/lbl_device_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="@string/device_id_"/>
+
+        <EditText
+            android:id="@+id/device_id"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/six_numbers"
+            android:layout_toLeftOf="@+id/device_id_info"
+            android:layout_marginLeft="20dp"
+            android:inputType="number"
+            android:maxLength="6" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/device_id_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_alignParentRight="true"
+            app:srcCompat="@drawable/info_outline_black"
+            android:tint="@color/colorPrimary"
+            android:layout_alignTop="@+id/device_id"
+            android:layout_alignBottom="@+id/device_id"/>
+
+        <TextView
+            android:id="@+id/lbl_device_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_below="@+id/device_id"
+            android:text="@string/device_code_"/>
+
+        <EditText
+            android:id="@+id/device_code"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/eight_chars"
+            android:layout_toLeftOf="@+id/device_id_info"
+            android:layout_marginLeft="20dp"
+            android:layout_below="@+id/device_id"
+            android:maxLength="8" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/device_code_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_alignParentRight="true"
+            app:srcCompat="@drawable/info_outline_black"
+            android:tint="@color/colorPrimary"
+            android:layout_alignTop="@+id/device_code"
+            android:layout_alignBottom="@+id/device_code"/>
+
+        <RelativeLayout
+            android:id="@+id/seperator_02"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey"
+            android:layout_below="@+id/device_code"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"/>
+        
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/sw_setting_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_1"
+            android:layout_below="@id/seperator_02"
+            android:checked="true"/>
+
+        <Button
+            android:id="@+id/add_device"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_activity_add_device"
+            android:layout_alignParentBottom="true"/>
+
+        <EditText
+            android:id="@+id/test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/add_device"/>
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,83 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <PreferenceCategory
+        android:title="@string/pref_header_general"
+        android:key="general_settings" >
+
+        <ListPreference
+            android:key="startpage"
+            android:title="@string/pref_general_start_page"
+            android:summary="%s"
+            android:defaultValue="0"
+            android:entries="@array/pref_start_page"
+            android:entryValues="@array/pref_start_page_values"
+            android:negativeButtonText="@string/cancel"
+            android:positiveButtonText="@string/ok"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_header_tracking"
+        android:key="tracking_settings" >
+
+        <ListPreference
+            android:key="maptype"
+            android:title="@string/pref_general_map_type"
+            android:summary="%s"
+            android:defaultValue="0"
+            android:entries="@array/pref_map_type"
+            android:entryValues="@array/pref_map_type_values"
+            android:negativeButtonText="@string/cancel"
+            android:positiveButtonText="@string/ok"/>
+
+        <EditTextPreference
+            android:key="tracking_own_position_interval"
+            android:title="@string/pref_tracking_own_position_interval_t"
+            android:summary="@string/loading"
+            android:inputType="number"
+            android:defaultValue="3"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_header_account"
+        android:key="account_settings" >
+
+        <Preference
+            android:key="account_change_pw"
+            android:title="@string/pref_change_pw_t"
+            android:summary="@string/pref_change_pw_m"/>
+
+        <Preference
+            android:key="account_delete_acc"
+            android:title="@string/pref_delete_acc_t"
+            android:summary="@string/pref_delete_acc_m"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_header_about"
+        android:key="about_settings" >
+
+        <Preference
+            android:key="about_serverinfo"
+            android:title="@string/pref_serverinfo_t"
+            android:summary="@string/loading"/>
+
+        <Preference
+            android:key="about_opensourcelicenses"
+            android:title="@string/pref_opensource_t"
+            android:summary="@string/pref_opensource_m"/>
+
+        <Preference
+            android:key="about_appversion"
+            android:title="@string/pref_appversion"
+            android:summary="@string/loading"/>
+
+        <Preference
+            android:key="about_developers"
+            android:title="@string/pref_developers_t"
+            android:summary="@string/pref_developers_m"/>
+
+        <Preference
+            android:key="about_moreapps"
+            android:title="@string/pref_more_apps_t"
+            android:summary="@string/pref_more_apps_m"/>
+    </PreferenceCategory>
+</PreferenceScreen>

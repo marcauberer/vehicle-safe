@@ -1,0 +1,58 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion "27.0.1"
+    defaultConfig {
+        applicationId "com.mrgames13.jimdo.vehiclesafe"
+        minSdkVersion 15
+        targetSdkVersion 27
+        versionCode 20
+        versionName "0.2.0"
+        renderscriptTargetApi 27
+        multiDexEnabled true
+        renderscriptSupportModeEnabled true
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        dev {
+            versionNameSuffix "-dev"
+            applicationIdSuffix '.dev'
+            minifyEnabled true
+            shrinkResources true
+        }
+    }
+    packagingOptions {
+        exclude 'lib/x86/libRSSupport.so'
+        exclude 'lib/x86/librsjni.so'
+        exclude 'lib/x86_64/libRSSupport.so'
+        exclude 'lib/x86_64/librsjni.so'
+        exclude 'lib/arm64-v8a/libRSSupport.so'
+        exclude 'lib/arm64-v8a/librsjni.so'
+        exclude 'lib/mips/libRSSupport.so'
+        exclude 'lib/mips/librsjni.so'
+        exclude 'lib/armeabi-v7a/libRSSupport.so'
+        exclude 'lib/armeabi-v7a/librsjni.so'
+    }
+}
+
+dependencies {
+    //compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:27.+'
+    compile 'com.android.support:design:27.+'
+    compile 'com.android.support:recyclerview-v7:27.+'
+    compile 'com.android.support:palette-v7:27.+'
+    compile 'com.android.support:support-v4:27.+'
+    compile 'com.android.support:support-vector-drawable:27.+'
+    compile 'com.google.firebase:firebase-core:11.+'
+    compile 'com.google.firebase:firebase-messaging:11.+'
+    compile 'net.margaritov.preference.colorpicker.ColorPickerPreference:ColorPickerPreference:1.0.+'
+    compile 'com.google.android.gms:play-services:11.+'
+}
+
+apply plugin: 'com.google.gms.google-services'

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "637262742263",
+    "firebase_url": "https://vehiclesafe-mrgames.firebaseio.com",
+    "project_id": "vehiclesafe-mrgames",
+    "storage_bucket": "vehiclesafe-mrgames.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:637262742263:android:6b28e6bead893edc",
+        "android_client_info": {
+          "package_name": "com.mrgames13.jimdo.vehiclesafe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "637262742263-ndl36kaondpfq3cno3sioul36aik0f6p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZgUUqnN-zLAHoI9GTXKRiSJgxxy-uyXk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

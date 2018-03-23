@@ -1,0 +1,143 @@
+<resources>
+    <!-- Common Strings -->
+    <string name="app_name">VehicleSafe</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="next">Weiter</string>
+    <string name="error_try_again">Fehler! Bitte erneut versuchen.</string>
+    <string name="tap_again_to_exit_app">Nochmals tippen zum Beenden</string>
+    <string name="offline_t">Server offline</string>
+    <string name="offline_m">Der VehicleSafe-Server ist offline. Solange dies so ist, können Sie keine Verbindung zu Ihrem Gerät aufbauen.</string>
+    <string name="waiting_t">Serverwartung</string>
+    <string name="waiting_m">Der VehicleSafe-Server wird gewartet. Sie können während der Wartung leider nicht mit Ihrem Gerät kommunizieren</string>
+    <string name="support_end_t">Appunterstützung zuende</string>
+    <string name="support_end_m">Es tut uns leid! VehicleSafe wird nicht mehr von M&amp;R Games unterstützt. Sie können diese App nun deinstallieren.</string>
+    <string name="update_necessary_t">Update verfügbar!</string>
+    <string name="update_necessary_m">Damit VehicleSafe ordnungsgemäß funktionieren kann, müssen Sie ein Update durchführen.</string>
+    <string name="download_update">Herunterladen</string>
+    <string name="update_available">Update verfügbar</string>
+    <string name="download">Download</string>
+    <string name="account_blocked_sending">Dem Account wurde das Senden von Nachrichten gesperrt</string>
+    <string name="account_blocked_receiving">Dem Account wurde das Empfangen von Nachrichten gesperrt</string>
+    <string name="account_blocked_both">Dem Account wurden das Senden und Empfangen von Nachrichten gesperrt</string>
+    <string name="support">Support</string>
+    <string name="finish">Beenden</string>
+    <string name="copyright" translatable="false">© M&#38;R Games 2017 - 2018</string>
+    <string name="loading">Laden ...</string>
+    <string name="settings">Einstellungen</string>
+    <string name="done">Fertig</string>
+    <string name="bike">Fahrrad</string>
+    <string name="motorcycle">Motorrad</string>
+    <string name="car">Auto</string>
+    <string name="please_wait_">Bitte warten ...</string>
+    <string name="play_services_error">Keine Verbindung zu den Google Play Diensten möglich</string>
+    <string name="seconds">Sekunde/-n</string>
+
+    <!-- Main-Activity -->
+    <string name="title_activity_main">@string/device_mgmt</string>
+    <string name="device_mgmt">Geräteverwaltung</string>
+    <string name="logout">Abmelden</string>
+    <string name="no_devices">Keine Geräte registriert</string>
+    <string name="logged_in_as">Angemeldet als</string>
+    <string name="details">Geräteinfos</string>
+    <string name="actions">Aktionen</string>
+    <string name="heading_details">Details</string>
+    <string name="please_enable_gps">Bitte aktivieren Sie oben den Schalter \'Standort\'</string>
+    <string name="last_update_">Letztes Update: </string>
+    <string name="adress_">Adresse:</string>
+    <string name="lng_">Längengrad:</string>
+    <string name="lat_">Breitengrad:</string>
+    <string name="state_locked">Abgeschlossen</string>
+    <string name="state_unlocked">Entsperrt</string>
+    <string name="state_stolen">Gestohlen</string>
+    <string name="alarm">Alarm aktivieren</string>
+    <string name="alarm_m">Wollen Sie wirklich den akkustischen Alarm aktivieren?</string>
+    <string name="map">Karte</string>
+    <string name="activate_gps">GPS aktivieren</string>
+    <string name="gps_not_available">Standort nicht verfügbar</string>
+    <string name="logging_in">Anmeldung läuft ...</string>
+
+    <!-- TrackingActivity -->
+    <string name="title_activity_tracking">Karte</string>
+    <string name="maptype_normal">Normale Karte</string>
+    <string name="maptype_terrain">Landschaft</string>
+    <string name="maptype_satellite">Satellit</string>
+    <string name="maptype_hybrid">Hybrid-Karte</string>
+    <string name="center_own_position">Eigene Position zentrieren</string>
+    <string name="center_device_position">Position des Geräts zentrieren</string>
+    <string name="gps_not_enabled_t">GPS aktivieren?</string>
+    <string name="gps_not_enabled_m">Dieses Feature benötigt die GPS-Funktion Ihres Geräts, möchten Sie diese aktivieren?</string>
+    <string name="own_location">Eigene Position</string>
+
+    <!-- LogIn Activity -->
+    <string name="title_activity_login">VehicleSafe - Login</string>
+    <string name="please_log_in_">Bitte melden Sie sich an:</string>
+    <string name="acc_id">Nutzername</string>
+    <string name="password">Passwort</string>
+    <string name="keep_logged_in">Angemeldet bleiben</string>
+    <string name="login">Anmelden</string>
+    <string name="forgot_password">Passwort vergessen</string>
+    <string name="account_does_not_exist">Dieser Account exsistiert nicht</string>
+    <string name="wrong_password">Falsches Passwort</string>
+    <string name="login_successful">Anmeldung erfolgreich</string>
+    <string name="account_blocked_t">Account gesperrt</string>
+    <string name="account_blocked_m">Ihr Account wurde auf unbestimmte Zeit gesperrt, da Sie VehicleSafe zu falschen Zwecken missbraucht oder die Nutzungsbedingungen missachtet haben.</string>
+    <string name="reset_password_m">Senden Sie uns eine Nachricht an uns, um Ihr Passwort zurückzusetzen</string>
+
+    <!-- RegisterActivity -->
+    <string name="title_activity_register">VehicleSafe - Registrieren</string>
+    <string name="username">Benutzername</string>
+    <string name="register">Account erstellen</string>
+    <string name="register_q">Noch keinen Account?</string>
+    <string name="repeat_password">Passwort wiederholen</string>
+    <string name="auto_login_after_registration">Nach der Registrierung automatisch einloggen</string>
+    <string name="passwords_does_not_match">Die Passwörter stimmen nicht überein</string>
+    <string name="account_successfully_created">Account erfolgreich erstellt</string>
+
+    <!-- AddDeviceActivity -->
+    <string name="title_activity_add_device">Gerät verknüpfen</string>
+    <string name="device_id">Geräte-ID</string>
+    <string name="device_id_">Geräte-ID:</string>
+    <string name="device_code_">Geräte-Code:</string>
+    <string name="device_name_">Name:</string>
+    <string name="six_numbers">6-stellige Nummer</string>
+    <string name="eight_chars">8-stelliger Code</string>
+    <string name="device_id_info">Die Geräte-ID wird benötigt um das Gerät zu identifizieren. Die Geräte-ID befindet sich auf der Unterseite des Geräts.</string>
+    <string name="device_code_info">Der Geräte-Code wird als eine Art Passwort verwendet. Sie finden ihn auf dem, dem Gerät beiliegenden Datenblatt. Wenn Sie den Zettel nicht mehr haben, tippen Sie bitte auf \'Code zurücksetzen\'</string>
+    <string name="add_device_info">Um ein Gerät hinzuzufügen, muss eine Verbindung zum Gerät aufgebaut werden. Stellen Sie sicher, dass es entsperrt und an einem Platz ist, an dem eine Mobilfunkverbindung gewährleistet ist.</string>
+    <string name="setting_1">Alarm über App beim Diebstahl</string>
+    <string name="successfully_linked">Verknüpfung erfolgreich!</string>
+    <string name="already_linked">Verknüpfung existiert bereits</string>
+    <string name="id_or_code_wrong">Falsche ID oder falscher Code</string>
+    <string name="reset_code">Code zurücksetzen</string>
+    <string name="reset_code_m">Senden Sie uns eine Nachricht an uns, um Ihren Geräte-Code zurückzusetzen</string>
+
+    <!-- EditDeviceActivity -->
+    <string name="title_activitiy_edit_device">Gerät bearbeiten</string>
+    <string name="choose_color">Farbe wählen</string>
+    <string name="tap_again_to_dismiss">Erneut tippen um abzubrechen</string>
+    <string name="device_name">Gerätename</string>
+    <string name="save_settings_t">Speichern</string>
+    <string name="save_settings_m">Wollen Sie wirklich diese Einstellungen speichern?</string>
+
+    <!-- DeviceItem -->
+    <string name="no_name">Kein Name vergeben</string>
+    <string name="delete_device_link_t">Verknüpfung löschen</string>
+    <string name="delete_device_link_m">Wollen Sie die Verknüpfung zum Gerät wirklich aufheben? Sie erhalten keine Statusmeldungen vom Gerät mehr. Es besteht die Möglichkeit das Gerät später erneut zu verknüpfen.</string>
+    <string name="delete_link">Verknüpfung löschen</string>
+    <string name="deleted_link_successfully">Verknüpfung erfolgreich gelöscht</string>
+
+    <!-- ServerMessagingUtils -->
+    <string name="activate_wifi">Wlan aktivieren</string>
+    <string name="internet_is_not_available">Internet nicht verfügbar</string>
+
+    <!-- FCMMessagingUtils -->
+    <string name="update_to_version">Update auf Version </string>
+
+    <!-- NotificationChannels -->
+    <string name="nc_system">Systemnachrichten</string>
+    <string name="nc_system_m">Nachrichten-Kanal für Sicherheitsrelevante Nachrichten von VehicleSafe.</string>
+
+</resources>

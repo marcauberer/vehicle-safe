@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".App.EditDeviceActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:theme="@style/toolbarStyle"
+        android:title="@string/app_name"
+        android:fitsSystemWindows="true"
+        android:elevation="1dp"/>
+
+    <View
+        android:id="@+id/reveal_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/toolbar"
+        android:fitsSystemWindows="false"
+        android:background="@color/colorPrimary"/>
+
+    <View
+        android:id="@+id/reveal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/toolbar"
+        android:fitsSystemWindows="false"
+        android:background="@color/colorPrimary"/>
+
+    <RelativeLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/lbl_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/device_name_"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:layout_alignBottom="@+id/et_name"
+            android:layout_alignTop="@+id/et_name" />
+
+        <EditText
+            android:id="@+id/et_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/lbl_name"
+            android:layout_marginLeft="15dp"
+            android:hint="@string/device_name"/>
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/color"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/lbl_name"
+            android:src="@drawable/simple_circle"/>
+
+        <Button
+            android:id="@+id/choose_color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/color"
+            android:layout_marginLeft="5dp"
+            android:layout_below="@+id/lbl_name"
+            android:text="@string/choose_color"/>
+
+        <RelativeLayout
+            android:id="@+id/seperator_01"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey"
+            android:layout_below="@+id/color"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"/>
+    </RelativeLayout>
+</RelativeLayout>
