@@ -7,29 +7,39 @@ import java.util.Date;
 public class Broadcast implements Comparable{
 
     //Konstanten
-    public static final int STATE_LOCKED = Device.STATE_LOCKED;
-    public static final int STATE_UNLOCKED = Device.STATE_UNLOCKED;
-    public static final int STATE_STOLEN = Device.STATE_STOLEN;
 
     //Variablen als Objekte
 
     //Variablen
+    private String device_id;
     private Date time_stamp;
-    private String from_id;
-    private String cmd;
-    private double longitude;
-    private double latitude;
     private int lock_mode;
+    private double latitude;
+    private double longitude;
+    private double altitude;
+    private double speed;
+    private boolean fix;
+    private double fix_quality;
 
     public Broadcast() {}
 
-    public Broadcast(Date time_stamp, String from_id, String cmd, double longitude, double latitude, int lock_mode) {
+    public Broadcast(String device_id, Date time_stamp, int lock_mode, double latitude, double longitude, double altitude, double speed, boolean fix, double fix_quality) {
+        this.device_id = device_id;
         this.time_stamp = time_stamp;
-        this.from_id = from_id;
-        this.cmd = cmd;
+        this.lock_mode = lock_mode;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.lock_mode = lock_mode;
+        this.altitude = altitude;
+        this.speed = speed;
+        this.fix = fix;
+        this.fix_quality = fix_quality;
+    }
+
+    public String getDeviceID() {
+        return device_id;
+    }
+    public void setDeviceID(String device_id) {
+        this.device_id = device_id;
     }
 
     public Date getTimeStamp() {
@@ -39,25 +49,11 @@ public class Broadcast implements Comparable{
         this.time_stamp = time_stamp;
     }
 
-    public String getFrom() {
-        return from_id;
+    public int getLockMode() {
+        return lock_mode;
     }
-    public void setFrom(String from_id) {
-        this.from_id = from_id;
-    }
-
-    public String getCmd() {
-        return cmd;
-    }
-    public void setCmd(String cmd) {
-        this.cmd = cmd;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    public void setLockMode(int lock_mode) {
+        this.lock_mode = lock_mode;
     }
 
     public double getLatitude() {
@@ -67,11 +63,39 @@ public class Broadcast implements Comparable{
         this.latitude = latitude;
     }
 
-    public int getLockMode() {
-        return lock_mode;
+    public double getLongitude() {
+        return longitude;
     }
-    public void setLockMode(int lock_mode) {
-        this.lock_mode = lock_mode;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getAltitude() {
+        return altitude;
+    }
+    public void setAltitude(double altitude) {
+        this.altitude = altitude;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public boolean isFix() {
+        return fix;
+    }
+    public void setFix(boolean fix) {
+        this.fix = fix;
+    }
+
+    public double getFix_quality() {
+        return fix_quality;
+    }
+    public void setFix_quality(double fix_quality) {
+        this.fix_quality = fix_quality;
     }
 
     @Override

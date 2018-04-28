@@ -27,6 +27,7 @@ import com.mrgames13.jimdo.vehiclesafe.HelpClasses.Constants;
 import com.mrgames13.jimdo.vehiclesafe.R;
 import com.mrgames13.jimdo.vehiclesafe.Utils.ServerMessagingUtils;
 import com.mrgames13.jimdo.vehiclesafe.Utils.StorageUtils;
+import com.mrgames13.jimdo.vehiclesafe.Utils.Tools;
 
 import net.margaritov.preference.colorpicker.ColorPickerDialog;
 
@@ -43,6 +44,7 @@ public class EditDeviceActivity extends AppCompatActivity {
     private View reveal_view;
     private View reveal_background_view;
     private EditText new_name;
+    private EditText new_description;
     private Button choose_color;
     private ImageView iv_color;
 
@@ -61,7 +63,7 @@ public class EditDeviceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_device);
 
         //Toolbar initialisieren
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         //Resourcen initialisieren
@@ -78,25 +80,20 @@ public class EditDeviceActivity extends AppCompatActivity {
         reveal_background_view = findViewById(R.id.reveal_background);
 
         //Komponenten initialisieren
-        new_name = (EditText) findViewById(R.id.et_name);
-        choose_color = (Button) findViewById(R.id.choose_color);
-        iv_color = (ImageView) findViewById(R.id.color);
+        new_name = findViewById(R.id.et_name);
+        new_description = findViewById(R.id.et_description);
+        choose_color = findViewById(R.id.choose_color);
+        iv_color = findViewById(R.id.color);
+        iv_color.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pickColor();
+            }
+        });
         choose_color.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                color_picker = new ColorPickerDialog(EditDeviceActivity.this, current_color);
-                color_picker.setAlphaSliderVisible(false);
-                color_picker.setHexValueEnabled(true);
-                color_picker.setTitle(res.getString(R.string.choose_color));
-                color_picker.setOnColorChangedListener(new ColorPickerDialog.OnColorChangedListener() {
-                    @Override
-                    public void onColorChanged(int color) {
-                        current_color = color;
-                        animateAppAndStatusBar(color);
-                        iv_color.setColorFilter(color, PorterDuff.Mode.SRC);
-                    }
-                });
-                color_picker.show();
+                pickColor();
             }
         });
 
@@ -106,6 +103,7 @@ public class EditDeviceActivity extends AppCompatActivity {
         //Intent-Extras abfragen
         if(getIntent().hasExtra("DeviceID")) device_id = getIntent().getStringExtra("DeviceID");
         if(getIntent().hasExtra("Name")) new_name.setText(getIntent().getStringExtra("Name"));
+        if(getIntent().hasExtra("Description")) new_description.setText(getIntent().getStringExtra("Description"));
         if(getIntent().hasExtra("Color")) {
             current_color = getIntent().getIntExtra("Color", res.getColor(R.color.colorPrimary));
             iv_color.setColorFilter(current_color, PorterDuff.Mode.SRC);
@@ -132,7 +130,6 @@ public class EditDeviceActivity extends AppCompatActivity {
         if(id == android.R.id.home) {
             onKeyDown(KeyEvent.KEYCODE_BACK, null);
         } else if(id == R.id.action_done) {
-
             //Änderungen speichern
             AlertDialog d = new AlertDialog.Builder(this)
                     .setCancelable(true)
@@ -160,7 +157,7 @@ public class EditDeviceActivity extends AppCompatActivity {
                                         .setPositiveButton(res.getString(R.string.ok), new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
-                                                saveSettingsToServer(input.getText().toString().trim());
+                                                saveSettingsToServer(Tools.encodeWithMd5(input.getText().toString().trim()));
                                             }
                                         })
                                         .setNegativeButton(res.getString(R.string.cancel), null)
@@ -177,19 +174,35 @@ public class EditDeviceActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void pickColor() {
+        color_picker = new ColorPickerDialog(EditDeviceActivity.this, current_color);
+        color_picker.setAlphaSliderVisible(false);
+        color_picker.setHexValueEnabled(true);
+        color_picker.setTitle(res.getString(R.string.choose_color));
+        color_picker.setOnColorChangedListener(new ColorPickerDialog.OnColorChangedListener() {
+            @Override
+            public void onColorChanged(int color) {
+                current_color = color;
+                animateAppAndStatusBar(color);
+                iv_color.setColorFilter(color, PorterDuff.Mode.SRC);
+            }
+        });
+        color_picker.show();
+    }
+
     private void saveSettingsToServer(final String code) {
         final ProgressDialog pd = new ProgressDialog(EditDeviceActivity.this);
         pd.setMessage(res.getString(R.string.please_wait_));
         pd.setCancelable(false);
         pd.show();
         //Einstellungs-String generieren
-        final String settings = "test";
+        final String settings = "0";
         //Einstellungen auf dem Server speichern
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try{
-                    final String result = smu.sendRequest(null, "acc_id=" + su.getString("AccID") + "&command=savedevicesettings&device_id=" + URLEncoder.encode(String.valueOf(device_id), "UTF-8") + "&device_code=" + URLEncoder.encode(su.getString(device_id + "_code"), "UTF-8") + "&device_name=" + URLEncoder.encode(new_name.getText().toString(), "UTF-8") + "&device_settings=" + URLEncoder.encode(settings, "UTF-8"));
+                    final String result = smu.sendRequest(null, "acc_id=" + su.getString("AccID") + "&command=savedevicesettings&device_id=" + URLEncoder.encode(String.valueOf(device_id), "UTF-8") + "&device_code=" + URLEncoder.encode(code, "UTF-8") + "&device_name=" + URLEncoder.encode(new_name.getText().toString().trim(), "UTF-8") + "&device_description=" + URLEncoder.encode(new_description.getText().toString().trim(), "UTF-8") + "&device_settings=" + URLEncoder.encode(settings, "UTF-8"));
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

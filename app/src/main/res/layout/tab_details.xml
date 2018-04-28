@@ -25,7 +25,20 @@
             android:text="@string/loading"
             android:textSize="18sp"
             android:layout_marginTop="5dp"
+            android:lines="1"
+            android:ellipsize="end"
             android:layout_below="@+id/heading_details"/>
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/loading"
+            android:textSize="18sp"
+            android:layout_marginTop="5dp"
+            android:maxLines="4"
+            android:ellipsize="marquee"
+            android:layout_below="@+id/name"/>
 
         <TextView
             android:id="@+id/id"
@@ -34,7 +47,7 @@
             android:text="@string/loading"
             android:textSize="18sp"
             android:layout_marginTop="10dp"
-            android:layout_below="@+id/name"/>
+            android:layout_below="@+id/description"/>
 
         <TextView
             android:id="@+id/last_update"
@@ -112,11 +125,58 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="@string/lng_"
-                android:textSize="18sp"
-                android:layout_below="@+id/seperator01"/>
+                android:textSize="18sp"/>
 
             <TextView
                 android:id="@+id/lng"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/container_alt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_below="@+id/container_lng">
+
+            <TextView
+                android:id="@+id/lbl_alt"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@string/alt_"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/alt"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/container_speed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_below="@+id/container_alt">
+
+            <TextView
+                android:id="@+id/lbl_speed"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@string/speed_"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/speed"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:textSize="18sp"
@@ -131,6 +191,6 @@
             android:textSize="18sp"
             android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
-            android:layout_below="@+id/container_lng"/>
+            android:layout_below="@+id/container_speed"/>
     </RelativeLayout>
 </ScrollView>

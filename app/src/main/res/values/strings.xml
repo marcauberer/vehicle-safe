@@ -1,6 +1,7 @@
 <resources>
     <!-- Common Strings -->
     <string name="app_name">VehicleSafe</string>
+    <string name="powered_by">powered by M&amp;R Games</string>
     <string name="ok">OK</string>
     <string name="cancel">Abbrechen</string>
     <string name="yes">Ja</string>
@@ -12,7 +13,7 @@
     <string name="offline_m">Der VehicleSafe-Server ist offline. Solange dies so ist, können Sie keine Verbindung zu Ihrem Gerät aufbauen.</string>
     <string name="waiting_t">Serverwartung</string>
     <string name="waiting_m">Der VehicleSafe-Server wird gewartet. Sie können während der Wartung leider nicht mit Ihrem Gerät kommunizieren</string>
-    <string name="support_end_t">Appunterstützung zuende</string>
+    <string name="support_end_t">Appunterstützung zu Ende</string>
     <string name="support_end_m">Es tut uns leid! VehicleSafe wird nicht mehr von M&amp;R Games unterstützt. Sie können diese App nun deinstallieren.</string>
     <string name="update_necessary_t">Update verfügbar!</string>
     <string name="update_necessary_m">Damit VehicleSafe ordnungsgemäß funktionieren kann, müssen Sie ein Update durchführen.</string>
@@ -34,6 +35,8 @@
     <string name="please_wait_">Bitte warten ...</string>
     <string name="play_services_error">Keine Verbindung zu den Google Play Diensten möglich</string>
     <string name="seconds">Sekunde/-n</string>
+    <string name="device_stolen">Gerät gestohlen</string>
+    <string name="device_stolen_m">wurde gestohlen</string>
 
     <!-- Main-Activity -->
     <string name="title_activity_main">@string/device_mgmt</string>
@@ -46,9 +49,12 @@
     <string name="heading_details">Details</string>
     <string name="please_enable_gps">Bitte aktivieren Sie oben den Schalter \'Standort\'</string>
     <string name="last_update_">Letztes Update: </string>
+    <string name="no_update_yet">Keine Aktivität bisher</string>
     <string name="adress_">Adresse:</string>
     <string name="lng_">Längengrad:</string>
     <string name="lat_">Breitengrad:</string>
+    <string name="alt_">Höhe:</string>
+    <string name="speed_">Geschwindigkeit:</string>
     <string name="state_locked">Abgeschlossen</string>
     <string name="state_unlocked">Entsperrt</string>
     <string name="state_stolen">Gestohlen</string>
@@ -119,6 +125,7 @@
     <string name="choose_color">Farbe wählen</string>
     <string name="tap_again_to_dismiss">Erneut tippen um abzubrechen</string>
     <string name="device_name">Gerätename</string>
+    <string name="device_description">Beschreibung des Geräts</string>
     <string name="save_settings_t">Speichern</string>
     <string name="save_settings_m">Wollen Sie wirklich diese Einstellungen speichern?</string>
 
@@ -139,5 +146,9 @@
     <!-- NotificationChannels -->
     <string name="nc_system">Systemnachrichten</string>
     <string name="nc_system_m">Nachrichten-Kanal für Sicherheitsrelevante Nachrichten von VehicleSafe.</string>
+
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>

@@ -109,7 +109,7 @@ public class DevicesRecyclerViewAdapter extends RecyclerView.Adapter<DevicesRecy
         holder.item_name.setText(device.getName().equals("no_name") ? res.getString(R.string.no_name) : device.getName());
 
         //Details setzen
-        holder.item_details.setText(device.getDetails());
+        holder.item_details.setText(device.getDescription());
 
         //Wenn der Adapter sich im EDIT_MODE befindet, edit und delete einblenden
         if(mode == MODE_EDIT) {
@@ -121,6 +121,7 @@ public class DevicesRecyclerViewAdapter extends RecyclerView.Adapter<DevicesRecy
                     Intent i = new Intent(context, EditDeviceActivity.class);
                     i.putExtra("DeviceID", device.getDeviceID());
                     if(!device.getName().equals("no_name")) i.putExtra("Name", device.getName());
+                    if(!device.getName().equals("no_description")) i.putExtra("Description", device.getDescription());
                     if(su.getInt(device.getDeviceID() + "_color", -1) != -1) i.putExtra("Color", su.getInt(device.getDeviceID() + "_color"));
                     context.startActivity(i);
                 }

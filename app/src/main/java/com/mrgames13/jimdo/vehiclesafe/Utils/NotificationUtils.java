@@ -118,7 +118,6 @@ public class NotificationUtils {
                 .setContentTitle(title)
                 .setContentText(message)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setStyle(new NotificationCompat.InboxStyle())
                 .setColor(res.getColor(R.color.colorPrimary));
     }
 

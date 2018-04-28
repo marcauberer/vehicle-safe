@@ -54,13 +54,24 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/lbl_name"
             android:layout_marginLeft="15dp"
+            android:maxLength="300"
             android:hint="@string/device_name"/>
+
+        <EditText
+            android:id="@+id/et_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/lbl_name"
+            android:layout_marginLeft="15dp"
+            android:layout_below="@+id/et_name"
+            android:maxLength="1000"
+            android:hint="@string/device_description"/>
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/color"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_below="@+id/lbl_name"
+            android:layout_below="@+id/et_description"
             android:src="@drawable/simple_circle"/>
 
         <Button
@@ -69,16 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/color"
             android:layout_marginLeft="5dp"
-            android:layout_below="@+id/lbl_name"
+            android:layout_below="@+id/et_description"
             android:text="@string/choose_color"/>
-
-        <RelativeLayout
-            android:id="@+id/seperator_01"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/grey"
-            android:layout_below="@+id/color"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"/>
     </RelativeLayout>
 </RelativeLayout>

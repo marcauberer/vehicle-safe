@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.graphics.PorterDuff;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -11,10 +12,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,7 +44,7 @@ public class VehicleViewPagerAdapter extends FragmentPagerAdapter {
     public VehicleViewPagerAdapter(Activity activity, FragmentManager manager, Device device) {
         super(manager);
         res = activity.getResources();
-        this.device = device;
+        VehicleViewPagerAdapter.device = device;
         tabTitles.add(res.getString(R.string.details));
         tabTitles.add(res.getString(R.string.actions));
     }
@@ -70,12 +74,15 @@ public class VehicleViewPagerAdapter extends FragmentPagerAdapter {
         //Variablen als Objekte
         public static View contentView;
         private TextView name;
+        private TextView description;
         private TextView id;
         private TextView last_update;
         private TextView status;
         private ImageView status_image;
         private TextView lat;
         private TextView lng;
+        private TextView alt;
+        private TextView speed;
         private TextView lbl_address;
 
         //Variablen
@@ -88,18 +95,25 @@ public class VehicleViewPagerAdapter extends FragmentPagerAdapter {
             //Komponenten initialisieren
             name = contentView.findViewById(R.id.name);
             name.setText(res.getString(R.string.device_name_) + " " + device.getName());
+            description = contentView.findViewById(R.id.description);
+            description.setText(device.getDescription());
             id = contentView.findViewById(R.id.id);
             id.setText(res.getString(R.string.device_id_) + " " + device.getDeviceID());
             last_update = contentView.findViewById(R.id.last_update);
-            last_update.setText(res.getString(R.string.last_update_) + " " + device.getLastUpdate());
+            last_update.setText(device.getLastUpdateLong() == 0 ? res.getString(R.string.no_update_yet) : res.getString(R.string.last_update_) + " " + device.getLastUpdate());
             status = contentView.findViewById(R.id.status);
             status_image = contentView.findViewById(R.id.status_image);
             lat = contentView.findViewById(R.id.lat);
             lat.setText(String.valueOf(device.getLat()));
             lng = contentView.findViewById(R.id.lng);
             lng.setText(String.valueOf(device.getLng()));
+            alt = contentView.findViewById(R.id.alt);
+            alt.setText(String.valueOf(device.getAlt()));
+            speed = contentView.findViewById(R.id.speed);
+            //speed.setText(String.valueOf());
             lbl_address = contentView.findViewById(R.id.address);
 
+            //Adresse herausfinden
             try{
                 Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
                 List<Address> addresses = geocoder.getFromLocation(device.getLat(), device.getLng(), 1);
@@ -107,9 +121,31 @@ public class VehicleViewPagerAdapter extends FragmentPagerAdapter {
                     String address = addresses.get(0).getAddressLine(0);
                     String city = addresses.get(0).getLocality();
                     lbl_address.setText(address + ", " + city);
+                } else {
+                    lbl_address.setVisibility(View.GONE);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                lbl_address.setVisibility(View.GONE);
+            }
+
+            //Status herausfinden
+            if(device.getState() == Device.STATE_LOCKED) {
+                status.setText(res.getString(R.string.state_locked));
+                status.setTextColor(res.getColor(R.color.locked));
+                status_image.setImageResource(R.drawable.lock_outline);
+                status_image.setColorFilter(ContextCompat.getColor(getContext(), R.color.locked), PorterDuff.Mode.SRC_IN);
+            } else if(device.getState() == Device.STATE_UNLOCKED) {
+                status.setText(res.getString(R.string.state_unlocked));
+                status.setTextColor(res.getColor(R.color.unlocked));
+                status_image.setImageResource(R.drawable.lock_open);
+                status_image.setColorFilter(ContextCompat.getColor(getContext(), R.color.unlocked), PorterDuff.Mode.SRC_IN);
+            } else if(device.getState() == Device.STATE_STOLEN) {
+                status.setText(res.getString(R.string.state_stolen));
+                status.setTextColor(res.getColor(R.color.stolen));
+                status_image.setImageResource(R.drawable.alarm);
+                status_image.setColorFilter(ContextCompat.getColor(getContext(), R.color.stolen), PorterDuff.Mode.SRC_IN);
+                Animation a = AnimationUtils.loadAnimation(getContext(), R.anim.shaking);
+                status_image.startAnimation(a);
             }
 
             return contentView;

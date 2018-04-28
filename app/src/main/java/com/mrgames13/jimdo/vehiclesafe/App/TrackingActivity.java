@@ -326,7 +326,7 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                 .build();
         googleApiClient.connect();
 
-        setDeviceLocation(new LatLng(48.1734196,9.7808683));
+        setDeviceLocation(new LatLng(device.getLat(),device.getLng()));
     }
 
     @Override

@@ -38,8 +38,8 @@ import android.widget.Toast;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mrgames13.jimdo.vehiclesafe.CommonObjects.Device;
-import com.mrgames13.jimdo.vehiclesafe.Fragments.DevicesFragment;
 import com.mrgames13.jimdo.vehiclesafe.Fragments.BigMapFragment;
+import com.mrgames13.jimdo.vehiclesafe.Fragments.DevicesFragment;
 import com.mrgames13.jimdo.vehiclesafe.Fragments.VehicleFragment;
 import com.mrgames13.jimdo.vehiclesafe.HelpClasses.Constants;
 import com.mrgames13.jimdo.vehiclesafe.R;
@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     public static MainActivity own_instance;
     public Device selected_device;
     private TextView header_data;
+
 
     //Utils-Pakete
     public ServerMessagingUtils smu;
@@ -362,7 +363,7 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog d = new AlertDialog.Builder(MainActivity.this)
                     .setCancelable(false)
                     .setTitle(res.getString(R.string.offline_t))
-                    .setMessage(res.getString(R.string.offline_m))
+                    .setMessage(user_msg.equals("") ? res.getString(R.string.offline_m) : user_msg)
                     .setPositiveButton(res.getString(R.string.ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -376,7 +377,7 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog d = new AlertDialog.Builder(MainActivity.this)
                     .setCancelable(false)
                     .setTitle(res.getString(R.string.waiting_t))
-                    .setMessage(res.getString(R.string.waiting_m))
+                    .setMessage(user_msg.equals("") ? res.getString(R.string.waiting_m) : user_msg)
                     .setPositiveButton(res.getString(R.string.ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -390,7 +391,7 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog d = new AlertDialog.Builder(MainActivity.this)
                     .setCancelable(false)
                     .setTitle(res.getString(R.string.support_end_t))
-                    .setMessage(res.getString(R.string.support_end_m))
+                    .setMessage(user_msg.equals("") ? res.getString(R.string.support_end_m) : user_msg)
                     .setPositiveButton(res.getString(R.string.ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

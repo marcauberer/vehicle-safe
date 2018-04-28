@@ -183,18 +183,18 @@ public class BigMapFragment extends Fragment implements OnMapReadyCallback, Goog
         mapView.getMapAsync(this);
     }
 
-    private void setDeviceLocation(int index, LatLng ll) {
-        devices.get(index).setCoordinates(ll.latitude, ll.longitude);
+    private void setDeviceLocation(int index, double latitude, double longitude, double altitude) {
+        devices.get(index).setCoordinates(latitude, longitude, altitude);
         if(index == devices.size() -1) goToDeviceLocation(index);
 
         if(deviceLocationMarkers.size() > index && deviceLocationMarkers.get(index) != null) {
-            deviceLocationMarkers.get(index).setPosition(ll);
+            deviceLocationMarkers.get(index).setPosition(new LatLng(latitude, longitude));
             deviceLocationMarkers.get(index).setSnippet(devices.get(index).getLastUpdate());
         } else {
             MarkerOptions opts = new MarkerOptions()
                     .title(devices.get(index).getName())
                     .snippet(devices.get(index).getLastUpdate())
-                    .position(ll);
+                    .position(new LatLng(latitude, longitude));
             if(deviceLocationMarkers.size() < index +1) {
                 Marker m = googleMap.addMarker(opts);
                 m.setTag(index);
@@ -341,7 +341,7 @@ public class BigMapFragment extends Fragment implements OnMapReadyCallback, Goog
         googleApiClient.connect();
 
         for(int i = 0; i < devices.size(); i++) {
-            setDeviceLocation(i, new LatLng(devices.get(i).getLat(), devices.get(i).getLng()));
+            setDeviceLocation(i, devices.get(i).getLat(), devices.get(i).getLng(), devices.get(i).getAlt());
         }
     }
 }

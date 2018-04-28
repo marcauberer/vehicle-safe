@@ -1,4 +1,5 @@
 <resources>
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="drawerArrowStyle">@style/drawerArrowStyle</item>
         <item name="colorPrimary">@color/colorPrimary</item>

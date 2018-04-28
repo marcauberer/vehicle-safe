@@ -24,7 +24,6 @@ import android.widget.Toast;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mrgames13.jimdo.vehiclesafe.HelpClasses.SimpleTextWatcherUtils;
 import com.mrgames13.jimdo.vehiclesafe.R;
-import com.mrgames13.jimdo.vehiclesafe.Utils.ColorUtils;
 import com.mrgames13.jimdo.vehiclesafe.Utils.ServerMessagingUtils;
 import com.mrgames13.jimdo.vehiclesafe.Utils.StorageUtils;
 import com.mrgames13.jimdo.vehiclesafe.Utils.Tools;
@@ -41,7 +40,6 @@ public class LogInActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private StorageUtils su;
     private ServerMessagingUtils smu;
-    private ColorUtils clru;
 
     //Komponenten
     private TextView et_id;
@@ -73,7 +71,7 @@ public class LogInActivity extends AppCompatActivity {
         res = getResources();
 
         //Toolbar initialisieren
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         //StorageUtils initialisieren
@@ -81,9 +79,6 @@ public class LogInActivity extends AppCompatActivity {
 
         //ServerMessagingUtils initialisieren
         smu = new ServerMessagingUtils(this);
-
-        //ColorUtils initialisieren
-        clru = new ColorUtils(res);
 
         //AndroidVersion herausfinden
         android_version = Build.VERSION.RELEASE;
@@ -94,11 +89,11 @@ public class LogInActivity extends AppCompatActivity {
         //Komponenten initialisieren
         et_id = (EditText) findViewById(R.id.login_id);
         et_password = (EditText) findViewById(R.id.login_password);
-        tv_forgot_password = (TextView) findViewById(R.id.forgot_password);
-        btn_login = (Button) findViewById(R.id.login_login);
-        btn_register = (Button) findViewById(R.id.login_register);
-        cb_keep_logged_in = (CheckBox) findViewById(R.id.login_keep_logged_in);
-        pb_login_in_progress = (ProgressBar) findViewById(R.id.login_in_progress);
+        tv_forgot_password = findViewById(R.id.forgot_password);
+        btn_login = findViewById(R.id.login_login);
+        btn_register = findViewById(R.id.login_register);
+        cb_keep_logged_in = findViewById(R.id.login_keep_logged_in);
+        pb_login_in_progress = findViewById(R.id.login_in_progress);
 
         et_id.addTextChangedListener(new SimpleTextWatcherUtils() {
             @Override

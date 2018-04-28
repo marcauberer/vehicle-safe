@@ -98,10 +98,10 @@ public class StorageUtils extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         try{
             //Tabellen erstellen
-            db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_DEVICES + " (device_id text, device_name text, device_type integer, last_update text, last_lat text, last_lng text, settings text, device_state integer);");
+            db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_DEVICES + " (device_id text, device_name text, device_description text, device_type integer, last_update text, last_lat text, last_lng text, last_alt text, settings text, device_state integer);");
             db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_BROADCASTS + " (bc_id text, time_stamp text, from_id text, cmd text, longitude real, latitude real, lock_mode integer);");
         } catch (Exception e) {
-            Log.e("ChatLet", "Database creation error: ", e);
+            Log.e("VS", "Database creation error: ", e);
         }
     }
 
@@ -137,10 +137,12 @@ public class StorageUtils extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("device_id", device.getDeviceID());
         values.put("device_name", device.getName());
+        values.put("device_description", device.getDescription());
         values.put("device_type", device.getType());
         values.put("last_update", device.getLastUpdate());
         values.put("last_lat", device.getLat());
         values.put("last_lng", device.getLng());
+        values.put("last_alt", device.getAlt());
         values.put("settings", device.getSettings());
         values.put("device_state", device.getState());
         addRecord(TABLE_DEVICES, values);
@@ -157,15 +159,31 @@ public class StorageUtils extends SQLiteOpenHelper {
             Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_DEVICES, null);
             ArrayList<Device> devices = new ArrayList<>();
             while(cursor.moveToNext()) {
-                devices.add(new Device(cursor.getString(0), cursor.getString(1), cursor.getInt(2), cursor.getString(3), cursor.getDouble(4), cursor.getDouble(5), cursor.getString(6), cursor.getInt(7)));
+                devices.add(new Device(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3), cursor.getLong(4), cursor.getDouble(5), cursor.getDouble(6), cursor.getDouble(7), cursor.getString(8), cursor.getInt(9)));
             }
             cursor.close();
             Collections.sort(devices);
             return devices;
         } catch (Exception e) {
-            Log.e("ChatLet", "Error loading devices", e);
+            Log.e("VS", "Error loading devices", e);
         }
         return new ArrayList<>();
+    }
+
+    public Device getDevice(String device_id) {
+        try{
+            SQLiteDatabase db = getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_DEVICES + " WHERE device_id='" + device_id + "'", null);
+            Device device = null;
+            while(cursor.moveToNext()) {
+                device = new Device(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3), cursor.getLong(4), cursor.getDouble(5), cursor.getDouble(6), cursor.getDouble(7), cursor.getString(8), cursor.getInt(9));
+            }
+            cursor.close();
+            return device;
+        } catch (Exception e) {
+            Log.e("VS", "Error loading device", e);
+        }
+        return null;
     }
 
     //----------------------------------------------Broadcasts--------------------------------------
@@ -183,7 +201,7 @@ public class StorageUtils extends SQLiteOpenHelper {
             Collections.sort(broadcasts);
             return broadcasts;
         } catch (Exception e) {
-            Log.e("ChatLet", "Error loading broadcasts", e);
+            Log.e("VS", "Error loading broadcasts", e);
         }
         return new ArrayList<>();
     }*/
