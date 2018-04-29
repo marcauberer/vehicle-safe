@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.mrgames13.jimdo.vehiclesafe.CommonObjects.Broadcast;
 import com.mrgames13.jimdo.vehiclesafe.CommonObjects.Device;
 
 import java.util.ArrayList;
@@ -98,8 +99,8 @@ public class StorageUtils extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         try{
             //Tabellen erstellen
-            db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_DEVICES + " (device_id text, device_name text, device_description text, device_type integer, last_update text, last_lat text, last_lng text, last_alt text, settings text, device_state integer);");
-            db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_BROADCASTS + " (bc_id text, time_stamp text, from_id text, cmd text, longitude real, latitude real, lock_mode integer);");
+            db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_DEVICES + " (device_id integer, device_name text, device_description text, device_type integer, settings text);");
+            db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_BROADCASTS + " (device_id integer, time_stamp integer, lock_mode integer, latitude real, longitude real, altitude real, speed real, fix integer, fix_quality real);");
         } catch (Exception e) {
             Log.e("VS", "Database creation error: ", e);
         }
@@ -139,12 +140,7 @@ public class StorageUtils extends SQLiteOpenHelper {
         values.put("device_name", device.getName());
         values.put("device_description", device.getDescription());
         values.put("device_type", device.getType());
-        values.put("last_update", device.getLastUpdate());
-        values.put("last_lat", device.getLat());
-        values.put("last_lng", device.getLng());
-        values.put("last_alt", device.getAlt());
         values.put("settings", device.getSettings());
-        values.put("device_state", device.getState());
         addRecord(TABLE_DEVICES, values);
     }
 
@@ -159,7 +155,7 @@ public class StorageUtils extends SQLiteOpenHelper {
             Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_DEVICES, null);
             ArrayList<Device> devices = new ArrayList<>();
             while(cursor.moveToNext()) {
-                devices.add(new Device(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3), cursor.getLong(4), cursor.getDouble(5), cursor.getDouble(6), cursor.getDouble(7), cursor.getString(8), cursor.getInt(9)));
+                devices.add(new Device(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3), cursor.getString(4)));
             }
             cursor.close();
             Collections.sort(devices);
@@ -170,13 +166,13 @@ public class StorageUtils extends SQLiteOpenHelper {
         return new ArrayList<>();
     }
 
-    public Device getDevice(String device_id) {
+    public Device getDevice(int device_id) {
         try{
             SQLiteDatabase db = getReadableDatabase();
-            Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_DEVICES + " WHERE device_id='" + device_id + "'", null);
+            Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_DEVICES + " WHERE device_id=" + String.valueOf(device_id), null);
             Device device = null;
             while(cursor.moveToNext()) {
-                device = new Device(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3), cursor.getLong(4), cursor.getDouble(5), cursor.getDouble(6), cursor.getDouble(7), cursor.getString(8), cursor.getInt(9));
+                device = new Device(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3), cursor.getString(4));
             }
             cursor.close();
             return device;
@@ -188,14 +184,57 @@ public class StorageUtils extends SQLiteOpenHelper {
 
     //----------------------------------------------Broadcasts--------------------------------------
 
-    /*public ArrayList<Broadcast> getAllBroadcasts(String device_id) {
+    public void addBroadcast(Broadcast broadcast) {
+        ContentValues values = new ContentValues();
+        values.put("device_id", broadcast.getDeviceID());
+        values.put("time_stamp", broadcast.getTimeStampLong());
+        values.put("lock_mode", broadcast.getLockMode());
+        values.put("latitude", broadcast.getLatitude());
+        values.put("longitude", broadcast.getLongitude());
+        values.put("altitude", broadcast.getAltitude());
+        values.put("speed", broadcast.getSpeed());
+        values.put("fix", broadcast.isFix());
+        values.put("fix_quality", broadcast.getFixQuality());
+        addRecord(TABLE_BROADCASTS, values);
+    }
+
+    public boolean addBroadcastIfTimestampNotExists(Broadcast broadcast) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT time_stamp FROM " + TABLE_BROADCASTS + " WHERE time_stamp=" + String.valueOf(broadcast.getTimeStampLong()), null);
+        if(cursor.getCount() == 0) {
+            ContentValues values = new ContentValues();
+            values.put("device_id", broadcast.getDeviceID());
+            values.put("time_stamp", broadcast.getTimeStampLong());
+            values.put("lock_mode", broadcast.getLockMode());
+            values.put("latitude", broadcast.getLatitude());
+            values.put("longitude", broadcast.getLongitude());
+            values.put("altitude", broadcast.getAltitude());
+            values.put("speed", broadcast.getSpeed());
+            values.put("fix", broadcast.isFix());
+            values.put("fix_quality", broadcast.getFixQuality());
+            addRecord(TABLE_BROADCASTS, values);
+            return true;
+        }
+        return false;
+    }
+
+    public ArrayList<Broadcast> getAllBroadcasts(String device_id) {
         try{
             SQLiteDatabase db = getReadableDatabase();
-            Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_BROADCASTS + " WHERE from_id='" + device_id + "'", null);
+            Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_BROADCASTS + " WHERE device_id=" + device_id, null);
             ArrayList<Broadcast> broadcasts = new ArrayList<>();
             while(cursor.moveToNext()) {
-                Date
-                broadcasts.add(new Broadcast(, device_id, cursor.getString(3), cursor.getLong(4), cursor.getLong(5), cursor.getInt(6)));
+                Broadcast b = new Broadcast();
+                b.setDeviceID(cursor.getInt(0));
+                b.setTimeStamp(cursor.getLong(1));
+                b.setLockMode(cursor.getInt(2));
+                b.setLatitude(cursor.getDouble(3));
+                b.setLongitude(cursor.getDouble(4));
+                b.setAltitude(cursor.getDouble(5));
+                b.setSpeed(cursor.getDouble(6));
+                b.setFix(cursor.getInt(7) > 0);
+                b.setFixQuality(cursor.getDouble(8));
+                broadcasts.add(b);
             }
             cursor.close();
             Collections.sort(broadcasts);
@@ -204,5 +243,29 @@ public class StorageUtils extends SQLiteOpenHelper {
             Log.e("VS", "Error loading broadcasts", e);
         }
         return new ArrayList<>();
-    }*/
+    }
+
+    public Broadcast getLastBroadcast(int device_id) {
+        try{
+            SQLiteDatabase db = getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_BROADCASTS + " WHERE device_id=" + String.valueOf(device_id) + " ORDER BY time_stamp DESC", null);
+            while(cursor.moveToNext()) {
+                Broadcast b = new Broadcast();
+                b.setDeviceID(cursor.getInt(0));
+                b.setTimeStamp(cursor.getLong(1));
+                b.setLockMode(cursor.getInt(2));
+                b.setLatitude(cursor.getDouble(3));
+                b.setLongitude(cursor.getDouble(4));
+                b.setAltitude(cursor.getDouble(5));
+                b.setSpeed(cursor.getDouble(6));
+                b.setFix(cursor.getInt(7) > 0);
+                b.setFixQuality(cursor.getDouble(8));
+                cursor.close();
+                return b;
+            }
+        } catch (Exception e) {
+            Log.e("VS", "Error loading broadcasts", e);
+        }
+        return null;
+    }
 }

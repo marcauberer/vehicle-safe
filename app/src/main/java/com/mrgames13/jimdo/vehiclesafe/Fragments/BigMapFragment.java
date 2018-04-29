@@ -38,10 +38,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mrgames13.jimdo.vehiclesafe.App.MainActivity;
+import com.mrgames13.jimdo.vehiclesafe.CommonObjects.Broadcast;
 import com.mrgames13.jimdo.vehiclesafe.CommonObjects.Device;
 import com.mrgames13.jimdo.vehiclesafe.HelpClasses.Constants;
 import com.mrgames13.jimdo.vehiclesafe.R;
-import com.mrgames13.jimdo.vehiclesafe.Utils.DeviceUtils;
 import com.mrgames13.jimdo.vehiclesafe.Utils.ServerMessagingUtils;
 import com.mrgames13.jimdo.vehiclesafe.Utils.StorageUtils;
 import com.mrgames13.jimdo.vehiclesafe.Utils.Tools;
@@ -63,6 +63,7 @@ public class BigMapFragment extends Fragment implements OnMapReadyCallback, Goog
     private LatLng ownLocation;
     private ArrayList<Device> devices;
     private ArrayList<Marker> deviceLocationMarkers = new ArrayList<>();
+    private ArrayList<Broadcast> last_broadcasts = new ArrayList<>();
     private Circle accuracy_circle;
     public static BigMapFragment own_instance;
     private LocationManager locManager;
@@ -71,7 +72,6 @@ public class BigMapFragment extends Fragment implements OnMapReadyCallback, Goog
 
     //Utils-Pakete
     private StorageUtils su;
-    private DeviceUtils du;
     private ServerMessagingUtils smu;
 
     //Variablen
@@ -93,9 +93,6 @@ public class BigMapFragment extends Fragment implements OnMapReadyCallback, Goog
 
             //ServerMessagingUtils initialisieren
             smu = new ServerMessagingUtils(getActivity());
-
-            //DeviceUtils initialisieren initialisieren
-            du = new DeviceUtils(getActivity());
 
             //LocationManager initialisieren
             locManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -142,6 +139,10 @@ public class BigMapFragment extends Fragment implements OnMapReadyCallback, Goog
 
             //Devices übernehmen
             devices = MainActivity.own_instance.devices;
+
+            //Letzte Broadcasts laden
+            last_broadcasts.clear();
+            for(Device d : devices) last_broadcasts.add(su.getLastBroadcast(d.getDeviceID()));
         }
     }
 
@@ -183,17 +184,16 @@ public class BigMapFragment extends Fragment implements OnMapReadyCallback, Goog
         mapView.getMapAsync(this);
     }
 
-    private void setDeviceLocation(int index, double latitude, double longitude, double altitude) {
-        devices.get(index).setCoordinates(latitude, longitude, altitude);
+    private void setDeviceLocation(int index, double latitude, double longitude) {
         if(index == devices.size() -1) goToDeviceLocation(index);
 
         if(deviceLocationMarkers.size() > index && deviceLocationMarkers.get(index) != null) {
             deviceLocationMarkers.get(index).setPosition(new LatLng(latitude, longitude));
-            deviceLocationMarkers.get(index).setSnippet(devices.get(index).getLastUpdate());
+            deviceLocationMarkers.get(index).setSnippet(last_broadcasts.get(index).getTimeStampString());
         } else {
             MarkerOptions opts = new MarkerOptions()
                     .title(devices.get(index).getName())
-                    .snippet(devices.get(index).getLastUpdate())
+                    .snippet(last_broadcasts.get(index).getTimeStampString())
                     .position(new LatLng(latitude, longitude));
             if(deviceLocationMarkers.size() < index +1) {
                 Marker m = googleMap.addMarker(opts);
@@ -253,7 +253,7 @@ public class BigMapFragment extends Fragment implements OnMapReadyCallback, Goog
     }
 
     private void goToDeviceLocation(int index) {
-        if(devices.get(index) != null) googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(devices.get(index).getLat(), devices.get(index).getLng()), 15));
+        if(devices.get(index) != null && last_broadcasts.get(index) != null) googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(last_broadcasts.get(index).getLatitude(), last_broadcasts.get(index).getLongitude()), 15));
     }
 
     public void setMapType(int mapType) {
@@ -326,7 +326,7 @@ public class BigMapFragment extends Fragment implements OnMapReadyCallback, Goog
                     }
                     device_coordinates.setText(String.valueOf(ll.latitude) + ", " + String.valueOf(ll.longitude));
                     device_name.setText(device.getName());
-                    device_last_update.setText(device.getLastUpdate());
+                    device_last_update.setText(last_broadcasts.get((Integer) marker.getTag()).getTimeStampString());
 
                     return v;
                 }
@@ -340,8 +340,22 @@ public class BigMapFragment extends Fragment implements OnMapReadyCallback, Goog
                 .build();
         googleApiClient.connect();
 
-        for(int i = 0; i < devices.size(); i++) {
-            setDeviceLocation(i, devices.get(i).getLat(), devices.get(i).getLng(), devices.get(i).getAlt());
+        for(int i = 0; i < last_broadcasts.size(); i++) {
+            if(last_broadcasts.get(i) != null) setDeviceLocation(i, last_broadcasts.get(i).getLatitude(), last_broadcasts.get(i).getLongitude());
         }
+    }
+
+    public void refresh(final Broadcast broadcast) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                for(int i = 0; i < last_broadcasts.size(); i++) {
+                    if(last_broadcasts.get(i).getDeviceID() == broadcast.getDeviceID()) {
+                        last_broadcasts.set(i, broadcast);
+                        setDeviceLocation(i, broadcast.getLatitude(), broadcast.getLongitude());
+                    }
+                }
+            }
+        });
     }
 }

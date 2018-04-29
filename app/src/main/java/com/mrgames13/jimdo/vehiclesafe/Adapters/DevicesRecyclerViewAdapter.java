@@ -155,7 +155,7 @@ public class DevicesRecyclerViewAdapter extends RecyclerView.Adapter<DevicesRecy
                                             @Override
                                             public void run() {
                                                 try{
-                                                    final String result = smu.sendRequest(null, "acc_id=" + URLEncoder.encode(su.getString("AccID"), "UTF-8") + "&command=removedevice&device_id=" + URLEncoder.encode(device.getDeviceID(), "UTF-8") + "&password=" + URLEncoder.encode(su.getString("Password"), "UTF-8"));
+                                                    final String result = smu.sendRequest(null, "acc_id=" + URLEncoder.encode(su.getString("AccID"), "UTF-8") + "&command=removedevice&device_id=" + URLEncoder.encode(String.valueOf(device.getDeviceID()), "UTF-8") + "&password=" + URLEncoder.encode(su.getString("Password"), "UTF-8"));
                                                     h.post(new Runnable() {
                                                         @Override
                                                         public void run() {

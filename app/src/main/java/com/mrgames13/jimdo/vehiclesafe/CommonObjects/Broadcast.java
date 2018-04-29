@@ -2,17 +2,21 @@ package com.mrgames13.jimdo.vehiclesafe.CommonObjects;
 
 import android.support.annotation.NonNull;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Broadcast implements Comparable{
 
     //Konstanten
+    public static final int STATE_LOCKED = 1;
+    public static final int STATE_UNLOCKED = 2;
+    public static final int STATE_STOLEN = 3;
 
     //Variablen als Objekte
 
     //Variablen
-    private String device_id;
-    private Date time_stamp;
+    private int device_id;
+    private long time_stamp;
     private int lock_mode;
     private double latitude;
     private double longitude;
@@ -23,7 +27,7 @@ public class Broadcast implements Comparable{
 
     public Broadcast() {}
 
-    public Broadcast(String device_id, Date time_stamp, int lock_mode, double latitude, double longitude, double altitude, double speed, boolean fix, double fix_quality) {
+    public Broadcast(int device_id, long time_stamp, int lock_mode, double latitude, double longitude, double altitude, double speed, boolean fix, double fix_quality) {
         this.device_id = device_id;
         this.time_stamp = time_stamp;
         this.lock_mode = lock_mode;
@@ -35,17 +39,20 @@ public class Broadcast implements Comparable{
         this.fix_quality = fix_quality;
     }
 
-    public String getDeviceID() {
+    public int getDeviceID() {
         return device_id;
     }
-    public void setDeviceID(String device_id) {
+    public void setDeviceID(int device_id) {
         this.device_id = device_id;
     }
 
-    public Date getTimeStamp() {
+    public long getTimeStampLong() {
         return time_stamp;
     }
-    public void setTimeStamp(Date time_stamp) {
+    public String getTimeStampString() {
+        return new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date(time_stamp));
+    }
+    public void setTimeStamp(long time_stamp) {
         this.time_stamp = time_stamp;
     }
 
@@ -91,16 +98,16 @@ public class Broadcast implements Comparable{
         this.fix = fix;
     }
 
-    public double getFix_quality() {
+    public double getFixQuality() {
         return fix_quality;
     }
-    public void setFix_quality(double fix_quality) {
+    public void setFixQuality(double fix_quality) {
         this.fix_quality = fix_quality;
     }
 
     @Override
     public int compareTo(@NonNull Object another) {
         Broadcast other_record = (Broadcast) another;
-        return getTimeStamp().compareTo(other_record.getTimeStamp());
+        return getTimeStampString().compareTo(other_record.getTimeStampString());
     }
 }

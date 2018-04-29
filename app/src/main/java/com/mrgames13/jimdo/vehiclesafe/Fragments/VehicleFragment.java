@@ -24,8 +24,8 @@ import android.widget.Toast;
 import com.mrgames13.jimdo.vehiclesafe.Adapters.VehicleViewPagerAdapter;
 import com.mrgames13.jimdo.vehiclesafe.App.MainActivity;
 import com.mrgames13.jimdo.vehiclesafe.App.TrackingActivity;
+import com.mrgames13.jimdo.vehiclesafe.CommonObjects.Broadcast;
 import com.mrgames13.jimdo.vehiclesafe.R;
-import com.mrgames13.jimdo.vehiclesafe.Utils.ServerMessagingUtils;
 import com.mrgames13.jimdo.vehiclesafe.Utils.StorageUtils;
 
 public class VehicleFragment extends Fragment {
@@ -42,7 +42,6 @@ public class VehicleFragment extends Fragment {
 
     //Utils-Pakete
     private StorageUtils su;
-    private ServerMessagingUtils smu;
 
     //Variablen
 
@@ -56,9 +55,6 @@ public class VehicleFragment extends Fragment {
 
         //StorageUtils initalisieren
         su = new StorageUtils(getActivity());
-
-        //ServerMessagingUtils initialisieren
-        smu = new ServerMessagingUtils(getActivity());
     }
 
     @Nullable
@@ -68,7 +64,7 @@ public class VehicleFragment extends Fragment {
 
         //Komponenten initialisieren
         viewpager = content_view.findViewById(R.id.vehicle_viewpager);
-        viewpager.setAdapter(new VehicleViewPagerAdapter(getActivity(), getChildFragmentManager(), MainActivity.own_instance.selected_device));
+        viewpager.setAdapter(new VehicleViewPagerAdapter(getActivity(), getChildFragmentManager(), MainActivity.own_instance.selected_device, su.getLastBroadcast(MainActivity.own_instance.selected_device.getDeviceID())));
         viewpager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
@@ -152,5 +148,14 @@ public class VehicleFragment extends Fragment {
         } else {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, REQ_LOCATION_PERMISSION);
         }
+    }
+
+    public void refresh(final Broadcast broadcast) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                viewpager.setAdapter(new VehicleViewPagerAdapter(getActivity(), getChildFragmentManager(), MainActivity.own_instance.selected_device, broadcast));
+            }
+        });
     }
 }

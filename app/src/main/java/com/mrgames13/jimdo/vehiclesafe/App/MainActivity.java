@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean pressedOnce;
     private String result;
     private int selected_menu_item_id = -1;
+    public static Fragment active_fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                                     menuItem.setChecked(true);
                                     su.putInt("startpage_device", selected_menu_item_id);
                                     for(Device d : devices) {
-                                        if(selected_menu_item_id == Integer.parseInt(d.getDeviceID())) launchVehicleFragement(d);
+                                        if(selected_menu_item_id == d.getDeviceID()) launchVehicleFragement(d);
                                     }
                                 }
                                 invalidateOptionsMenu();
@@ -232,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
             } else if(startpage == 2) {
                 selected_menu_item_id = su.getInt("startpage_device", 0);
                 for(Device d : devices) {
-                    if(selected_menu_item_id == Integer.parseInt(d.getDeviceID())) launchVehicleFragement(d);
+                    if(selected_menu_item_id == d.getDeviceID()) launchVehicleFragement(d);
                 }
             }
         }
@@ -595,6 +596,7 @@ public class MainActivity extends AppCompatActivity {
         //LogIn-Activity starten
         startActivity(new Intent(MainActivity.this, LogInActivity.class));
         overridePendingTransition(R.anim.in_login, R.anim.out_logout);
+        active_fragment = null;
     }
 
     private void launchDevicesFragment() {
@@ -603,17 +605,19 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.add(R.id.container, fragment);
         container.removeAllViews();
         fragmentTransaction.commit();
+        active_fragment = fragment;
     }
 
     public void launchVehicleFragement(Device device) {
         selected_device = device;
         toolbar.setTitle(device.getName());
-        navView.getMenu().findItem(Integer.parseInt(device.getDeviceID())).setChecked(true);
+        navView.getMenu().findItem(device.getDeviceID()).setChecked(true);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment fragment = new VehicleFragment();
         fragmentTransaction.add(R.id.container, fragment);
         container.removeAllViews();
         fragmentTransaction.commit();
+        active_fragment = fragment;
     }
 
     public void launchMapFragment() {
@@ -622,19 +626,20 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.add(R.id.container, fragment);
         container.removeAllViews();
         fragmentTransaction.commit();
+        active_fragment = fragment;
     }
 
     private void updateNavigationMenuDevices() {
         Menu m = navView.getMenu();
         for(Device d : devices) {
-            m.removeItem(Integer.parseInt(d.getDeviceID()));
+            m.removeItem(d.getDeviceID());
             int icon_id = R.drawable.directions_bike;
             if(d.getType() == Device.TYPE_MOTORCYCLE) {
                 icon_id = R.drawable.directions_motorcycle;
             } else if(d.getType() == Device.TYPE_CAR) {
                 icon_id = R.drawable.directions_car;
             }
-            m.add(R.id.menu_vehicles, Integer.parseInt(d.getDeviceID()), Menu.NONE, d.getName()).setIcon(icon_id).setCheckable(true);
+            m.add(R.id.menu_vehicles, d.getDeviceID(), Menu.NONE, d.getName()).setIcon(icon_id).setCheckable(true);
         }
         navView.setCheckedItem(selected_menu_item_id);
     }

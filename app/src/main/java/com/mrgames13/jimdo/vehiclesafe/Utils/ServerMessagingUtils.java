@@ -18,15 +18,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import javax.net.ssl.HttpsURLConnection;
+
 public class ServerMessagingUtils {
 
     //Konstanten
-    private final String SERVER_ADRESS = "http://vehiclesafe.mrgames-server.de/";
+    private final String SERVER_ADRESS = "https://mrgames-server.de/vehicle_safe/";
     private final String SERVER_MAIN_SCRIPT = SERVER_ADRESS + "ServerScript.php";
 
     //Variablen als Objekte
@@ -52,7 +53,7 @@ public class ServerMessagingUtils {
         if(isInternetAvailable()) {
             try {
                 //Connection aufbauen
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
                 connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 connection.setFixedLengthStreamingMode(param.getBytes().length);
                 connection.setDoOutput(true);

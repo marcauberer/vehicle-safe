@@ -38,6 +38,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.mrgames13.jimdo.vehiclesafe.CommonObjects.Broadcast;
 import com.mrgames13.jimdo.vehiclesafe.CommonObjects.Device;
 import com.mrgames13.jimdo.vehiclesafe.HelpClasses.Constants;
 import com.mrgames13.jimdo.vehiclesafe.R;
@@ -50,6 +51,7 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
     //Konstanten
 
     //Variablen als Objekte
+    public static TrackingActivity own_instance;
     private Resources res;
     private Toolbar toolbar;
     private StorageUtils su;
@@ -66,6 +68,7 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
     private LocationManager locManager;
     private Handler h;
     private Snackbar snackbar;
+    private Broadcast last_broadcast;
 
     //Variablen
 
@@ -75,11 +78,23 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
         if (Tools.isPlayServiceAvailable(this)) {
             setContentView(R.layout.activity_tracking);
 
+            //Eigene Instanz initialisieren
+            own_instance = this;
+
             //Device-Objekt übertragen
             if (MainActivity.own_instance.selected_device != null) device = MainActivity.own_instance.selected_device;
 
+            //Resourcen initialisieren
+            res = getResources();
+
             //StorageUtils initialisieren
             su = new StorageUtils(this);
+            last_broadcast = su.getLastBroadcast(device.getDeviceID());
+            if(last_broadcast == null) {
+                Toast.makeText(this, res.getString(R.string.no_update_yet), Toast.LENGTH_SHORT).show();
+                finish();
+                return;
+            }
 
             //ServerMessagingUtils initialisieren
             smu = new ServerMessagingUtils(this);
@@ -131,9 +146,6 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
         } else {
             //TODO: Error-Seite anzeigen mit setContentView
         }
-
-        //Resourcen initialisieren
-        res = getResources();
 
         //Toolbar initialisieren
         toolbar = findViewById(R.id.toolbar);
@@ -195,19 +207,24 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
         mapFragment.getMapAsync(this);
     }
 
-    private void setDeviceLocation(LatLng ll) {
-        deviceLocation = ll;
+    private void setDeviceLocation(Broadcast last_broadcast) {
+        deviceLocation = new LatLng(last_broadcast.getLatitude(), last_broadcast.getLongitude());
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(deviceLocation, 15));
 
         if (deviceLocationMarker != null) {
             deviceLocationMarker.setPosition(deviceLocation);
-            deviceLocationMarker.setSnippet(device.getLastUpdate());
+            deviceLocationMarker.setSnippet(last_broadcast.getTimeStampString());
         } else {
             MarkerOptions opts = new MarkerOptions()
                     .title(device.getName())
-                    .snippet(device.getLastUpdate())
+                    .snippet(last_broadcast.getTimeStampString())
                     .position(deviceLocation);
             deviceLocationMarker = googleMap.addMarker(opts);
+        }
+
+        if(deviceLocationMarker.isInfoWindowShown()) {
+            deviceLocationMarker.hideInfoWindow();
+            deviceLocationMarker.showInfoWindow();
         }
     }
 
@@ -312,7 +329,7 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                     }
                     device_coordinates.setText(String.valueOf(ll.latitude) + ", " + String.valueOf(ll.longitude));
                     device_name.setText(device.getName());
-                    device_last_update.setText(device.getLastUpdate());
+                    device_last_update.setText(last_broadcast.getTimeStampString());
 
                     return v;
                 }
@@ -326,7 +343,7 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                 .build();
         googleApiClient.connect();
 
-        setDeviceLocation(new LatLng(device.getLat(),device.getLng()));
+        setDeviceLocation(last_broadcast);
     }
 
     @Override
@@ -336,5 +353,15 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
         } else {
             setOwnLocation(loc);
         }
+    }
+
+    public void refresh(final Broadcast broadcast) {
+        last_broadcast = broadcast;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                setDeviceLocation(broadcast);
+            }
+        });
     }
 }

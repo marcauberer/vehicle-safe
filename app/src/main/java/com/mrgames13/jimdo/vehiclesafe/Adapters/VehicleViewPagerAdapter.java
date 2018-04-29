@@ -23,6 +23,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mrgames13.jimdo.vehiclesafe.CommonObjects.Broadcast;
 import com.mrgames13.jimdo.vehiclesafe.CommonObjects.Device;
 import com.mrgames13.jimdo.vehiclesafe.R;
 
@@ -38,13 +39,15 @@ public class VehicleViewPagerAdapter extends FragmentPagerAdapter {
     private static Resources res;
     private ArrayList<String> tabTitles = new ArrayList<>();
     private static Device device;
+    private static Broadcast last_broadcast;
 
     //Variablen
 
-    public VehicleViewPagerAdapter(Activity activity, FragmentManager manager, Device device) {
+    public VehicleViewPagerAdapter(Activity activity, FragmentManager manager, Device device, Broadcast last_broadcast) {
         super(manager);
         res = activity.getResources();
         VehicleViewPagerAdapter.device = device;
+        VehicleViewPagerAdapter.last_broadcast = last_broadcast;
         tabTitles.add(res.getString(R.string.details));
         tabTitles.add(res.getString(R.string.actions));
     }
@@ -94,33 +97,47 @@ public class VehicleViewPagerAdapter extends FragmentPagerAdapter {
 
             //Komponenten initialisieren
             name = contentView.findViewById(R.id.name);
-            name.setText(res.getString(R.string.device_name_) + " " + device.getName());
+
             description = contentView.findViewById(R.id.description);
             description.setText(device.getDescription());
             id = contentView.findViewById(R.id.id);
-            id.setText(res.getString(R.string.device_id_) + " " + device.getDeviceID());
             last_update = contentView.findViewById(R.id.last_update);
-            last_update.setText(device.getLastUpdateLong() == 0 ? res.getString(R.string.no_update_yet) : res.getString(R.string.last_update_) + " " + device.getLastUpdate());
             status = contentView.findViewById(R.id.status);
             status_image = contentView.findViewById(R.id.status_image);
             lat = contentView.findViewById(R.id.lat);
-            lat.setText(String.valueOf(device.getLat()));
             lng = contentView.findViewById(R.id.lng);
-            lng.setText(String.valueOf(device.getLng()));
             alt = contentView.findViewById(R.id.alt);
-            alt.setText(String.valueOf(device.getAlt()));
             speed = contentView.findViewById(R.id.speed);
-            //speed.setText(String.valueOf());
+            if(last_broadcast != null) speed.setText(String.valueOf(last_broadcast.getSpeed()));
             lbl_address = contentView.findViewById(R.id.address);
 
+            name.setText(res.getString(R.string.device_name_) + " " + device.getName());
+            id.setText(res.getString(R.string.device_id_) + " " + device.getDeviceID());
+            last_update.setText(last_broadcast == null ? res.getString(R.string.no_update_yet) : res.getString(R.string.last_update_) + " " + last_broadcast.getTimeStampString());
+            lat.setText(last_broadcast == null ? "0.0" : String.valueOf(last_broadcast.getLatitude()));
+            lng.setText(last_broadcast == null ? "0.0" : String.valueOf(last_broadcast.getLongitude()));
+            alt.setText(last_broadcast == null ? "0.0" : String.valueOf(last_broadcast.getAltitude()));
+
+            updateData();
+
+            return contentView;
+        }
+
+        @Override
+        public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
+        }
+
+        private void updateData() {
             //Adresse herausfinden
             try{
                 Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
-                List<Address> addresses = geocoder.getFromLocation(device.getLat(), device.getLng(), 1);
+                List<Address> addresses = geocoder.getFromLocation(last_broadcast.getLatitude(), last_broadcast.getLongitude(), 1);
                 if(addresses.size() > 0) {
                     String address = addresses.get(0).getAddressLine(0);
                     String city = addresses.get(0).getLocality();
                     lbl_address.setText(address + ", " + city);
+                    lbl_address.setVisibility(View.VISIBLE);
                 } else {
                     lbl_address.setVisibility(View.GONE);
                 }
@@ -129,17 +146,17 @@ public class VehicleViewPagerAdapter extends FragmentPagerAdapter {
             }
 
             //Status herausfinden
-            if(device.getState() == Device.STATE_LOCKED) {
+            if(last_broadcast.getLockMode() == Broadcast.STATE_LOCKED) {
                 status.setText(res.getString(R.string.state_locked));
                 status.setTextColor(res.getColor(R.color.locked));
                 status_image.setImageResource(R.drawable.lock_outline);
                 status_image.setColorFilter(ContextCompat.getColor(getContext(), R.color.locked), PorterDuff.Mode.SRC_IN);
-            } else if(device.getState() == Device.STATE_UNLOCKED) {
+            } else if(last_broadcast.getLockMode() == Broadcast.STATE_UNLOCKED) {
                 status.setText(res.getString(R.string.state_unlocked));
                 status.setTextColor(res.getColor(R.color.unlocked));
                 status_image.setImageResource(R.drawable.lock_open);
                 status_image.setColorFilter(ContextCompat.getColor(getContext(), R.color.unlocked), PorterDuff.Mode.SRC_IN);
-            } else if(device.getState() == Device.STATE_STOLEN) {
+            } else if(last_broadcast.getLockMode() == Broadcast.STATE_STOLEN) {
                 status.setText(res.getString(R.string.state_stolen));
                 status.setTextColor(res.getColor(R.color.stolen));
                 status_image.setImageResource(R.drawable.alarm);
@@ -147,13 +164,16 @@ public class VehicleViewPagerAdapter extends FragmentPagerAdapter {
                 Animation a = AnimationUtils.loadAnimation(getContext(), R.anim.shaking);
                 status_image.startAnimation(a);
             }
-
-            return contentView;
         }
 
-        @Override
-        public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-            super.onViewCreated(view, savedInstanceState);
+        public void refresh(Broadcast broadcast) {
+            last_broadcast = broadcast;
+            last_update.setText(broadcast.getTimeStampString());
+            lat.setText(String.valueOf(broadcast.getLatitude()));
+            lng.setText(String.valueOf(broadcast.getLongitude()));
+            alt.setText(String.valueOf(broadcast.getAltitude()));
+            speed.setText(String.valueOf(broadcast.getSpeed()));
+            updateData();
         }
     }
 

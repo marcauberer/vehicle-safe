@@ -84,6 +84,19 @@ public class NotificationUtils {
         nm.notify(id, n.build());
     }
 
+    public void displayNotification(int id, String title, String message, Intent i) {
+        //Notification aufbauen
+        NotificationCompat.Builder n = buildNotification(title, message);
+        n.setAutoCancel(true);
+        if(i != null) {
+            PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
+            n.setContentIntent(pi);
+        }
+        //ID ermitteln
+        //n.setChannelId(Constants.NC_SYSTEM);
+        nm.notify(id, n.build());
+    }
+
     public void displayProgressMessage(String title, String message, int id, int progress, Intent i, int priority) {
         if(priority == PRIORITY_MIN) priority = NotificationCompat.PRIORITY_MIN;
         if(priority == PRIORITY_LOW) priority = NotificationCompat.PRIORITY_LOW;
