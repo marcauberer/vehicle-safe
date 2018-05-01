@@ -200,7 +200,7 @@ public class StorageUtils extends SQLiteOpenHelper {
 
     public boolean addBroadcastIfTimestampNotExists(Broadcast broadcast) {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT time_stamp FROM " + TABLE_BROADCASTS + " WHERE time_stamp=" + String.valueOf(broadcast.getTimeStampLong()), null);
+        Cursor cursor = db.rawQuery("SELECT time_stamp FROM " + TABLE_BROADCASTS + " WHERE device_id=" + String.valueOf(broadcast.getDeviceID()) + " AND time_stamp=" + String.valueOf(broadcast.getTimeStampLong()), null);
         if(cursor.getCount() == 0) {
             ContentValues values = new ContentValues();
             values.put("device_id", broadcast.getDeviceID());
@@ -218,10 +218,10 @@ public class StorageUtils extends SQLiteOpenHelper {
         return false;
     }
 
-    public ArrayList<Broadcast> getAllBroadcasts(String device_id) {
+    public ArrayList<Broadcast> getAllBroadcasts(int device_id) {
         try{
             SQLiteDatabase db = getReadableDatabase();
-            Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_BROADCASTS + " WHERE device_id=" + device_id, null);
+            Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_BROADCASTS + " WHERE device_id=" + String.valueOf(device_id), null);
             ArrayList<Broadcast> broadcasts = new ArrayList<>();
             while(cursor.moveToNext()) {
                 Broadcast b = new Broadcast();
@@ -243,6 +243,28 @@ public class StorageUtils extends SQLiteOpenHelper {
             Log.e("VS", "Error loading broadcasts", e);
         }
         return new ArrayList<>();
+    }
+
+    public ArrayList<Broadcast> getBroadcastHistory(int device_id) {
+        ArrayList<Broadcast> history = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_BROADCASTS + " WHERE device_id=" + String.valueOf(device_id), null);
+        while(cursor.moveToNext()) {
+            Broadcast b = new Broadcast();
+            b.setDeviceID(cursor.getInt(0));
+            b.setTimeStamp(cursor.getLong(1));
+            b.setLockMode(cursor.getInt(2));
+            b.setLatitude(cursor.getDouble(3));
+            b.setLongitude(cursor.getDouble(4));
+            b.setAltitude(cursor.getDouble(5));
+            b.setSpeed(cursor.getDouble(6));
+            b.setFix(cursor.getInt(7) > 0);
+            b.setFixQuality(cursor.getDouble(8));
+            history.add(b);
+        }
+        cursor.close();
+        Collections.sort(history);
+        return history;
     }
 
     public Broadcast getLastBroadcast(int device_id) {

@@ -8,6 +8,7 @@
     <string name="no">Nein</string>
     <string name="next">Weiter</string>
     <string name="error_try_again">Fehler! Bitte erneut versuchen.</string>
+    <string name="error">Fehler!.</string>
     <string name="tap_again_to_exit_app">Nochmals tippen zum Beenden</string>
     <string name="offline_t">Server offline</string>
     <string name="offline_m">Der VehicleSafe-Server ist offline. Solange dies so ist, können Sie keine Verbindung zu Ihrem Gerät aufbauen.</string>
@@ -25,7 +26,6 @@
     <string name="account_blocked_both">Dem Account wurden das Senden und Empfangen von Nachrichten gesperrt</string>
     <string name="support">Support</string>
     <string name="finish">Beenden</string>
-    <string name="copyright" translatable="false">© M&#38;R Games 2017 - 2018</string>
     <string name="loading">Laden ...</string>
     <string name="settings">Einstellungen</string>
     <string name="done">Fertig</string>
@@ -72,6 +72,7 @@
     <string name="maptype_satellite">Satellit</string>
     <string name="maptype_hybrid">Hybrid-Karte</string>
     <string name="center_own_position">Eigene Position zentrieren</string>
+    <string name="show_history">Verlauf anzeigen</string>
     <string name="center_device_position">Position des Geräts zentrieren</string>
     <string name="gps_not_enabled_t">GPS aktivieren?</string>
     <string name="gps_not_enabled_m">Dieses Feature benötigt die GPS-Funktion Ihres Geräts, möchten Sie diese aktivieren?</string>

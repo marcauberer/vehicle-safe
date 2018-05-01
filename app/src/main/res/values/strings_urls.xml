@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="url_server_script">https://mrgames-server.de/vehicle_safe/ServerScript.php</string>
-    <string name="url_support">https://mrgames13.jimdo.com/vehiclesafe/info</string>
+    <string name="url_support">https://mrgames-server.de/tools/pwreset/?product=vs</string>
 
 </resources>

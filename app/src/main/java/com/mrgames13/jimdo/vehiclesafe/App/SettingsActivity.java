@@ -176,13 +176,12 @@ public class SettingsActivity extends PreferenceActivity {
         account_delete.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                final EditText password = new EditText(SettingsActivity.this);
-                password.setHint(R.string.password);
+                View dialog_view = getLayoutInflater().inflate(R.layout.dialog_delete_account, null);
+                final EditText password = dialog_view.findViewById(R.id.password_entry);
 
                 AlertDialog d = new AlertDialog.Builder(SettingsActivity.this)
                         .setCancelable(true)
-                        .setTitle(res.getString(R.string.pref_delete_acc_t))
-                        .setView(password)
+                        .setView(dialog_view)
                         .setNegativeButton(res.getString(R.string.cancel), null)
                         .setPositiveButton(res.getString(R.string.next), new DialogInterface.OnClickListener() {
                             @Override
@@ -190,6 +189,7 @@ public class SettingsActivity extends PreferenceActivity {
                                 AlertDialog d = new AlertDialog.Builder(SettingsActivity.this)
                                         .setCancelable(true)
                                         .setTitle(res.getString(R.string.pref_delete_acc_t))
+                                        .setIcon(R.drawable.delete_red)
                                         .setMessage(res.getString(R.string.delete_acc_q))
                                         .setNegativeButton(res.getString(R.string.cancel), new DialogInterface.OnClickListener() {
                                             @Override
@@ -206,8 +206,6 @@ public class SettingsActivity extends PreferenceActivity {
                                         })
                                         .create();
                                 d.show();
-                                Button bq = d.getButton(DialogInterface.BUTTON_POSITIVE);
-                                bq.setTextColor(Color.RED);
                             }
                         })
                         .create();

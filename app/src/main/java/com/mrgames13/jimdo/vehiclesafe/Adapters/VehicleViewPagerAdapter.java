@@ -118,7 +118,7 @@ public class VehicleViewPagerAdapter extends FragmentPagerAdapter {
             lng.setText(last_broadcast == null ? "0.0" : String.valueOf(last_broadcast.getLongitude()));
             alt.setText(last_broadcast == null ? "0.0" : String.valueOf(last_broadcast.getAltitude()));
 
-            updateData();
+            if(last_broadcast != null) updateData();
 
             return contentView;
         }

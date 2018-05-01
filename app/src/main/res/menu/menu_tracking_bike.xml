@@ -13,6 +13,13 @@
         android:id="@+id/action_center_own_pos"
         android:title="@string/center_own_position"
         android:icon="@drawable/location_white"
+        android:orderInCategory="40"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_show_hide_history"
+        android:title="@string/show_history"
+        android:icon="@drawable/history_white"
         android:orderInCategory="50"
         app:showAsAction="always"/>
 

@@ -27,6 +27,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -51,6 +52,7 @@ import com.mrgames13.jimdo.vehiclesafe.Utils.StorageUtils;
 import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -179,6 +181,8 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+        TextView copyright = findViewById(R.id.copyright);
+        copyright.setText("© M&R Games 2017 - " + Calendar.getInstance().get(Calendar.YEAR));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         drawer_toggle.syncState();
         View header_view = navView.getHeaderView(0);
@@ -333,10 +337,8 @@ public class MainActivity extends AppCompatActivity {
                     int index8 = result.indexOf("~", index7 +1);
                     final String client_name = result.substring(0, index1);
                     final int server_state = Integer.parseInt(result.substring(index1 +1, index2));
-                    final int min_appversion = Integer.parseInt(result.substring(index2 +1, index3).replace(".", ""));
-                    final int newest_appversion = Integer.parseInt(result.substring(index3 +1, index4).replace(".", ""));
-                    final int min_admin_version = Integer.parseInt(result.substring(index4 +1, index5).replace(".", ""));
-                    final int newest_admin_version = Integer.parseInt(result.substring(index5 +1, index6).replace(".", ""));
+                    final int min_appversion = Integer.parseInt(result.substring(index2 +1, index3).trim());
+                    final int newest_appversion = Integer.parseInt(result.substring(index3 +1, index4).trim());
                     final String support_url = result.substring(index6 +1, index7);
                     final String owners = result.substring(index7 +1, index8);
                     final String user_msg = result.substring(index8 +1);
@@ -404,6 +406,9 @@ public class MainActivity extends AppCompatActivity {
             d.show();
         } else {
             //AppVersion überprüfen
+            Log.d("VS", String.valueOf(app_version_code));
+            Log.d("VS", String.valueOf(min_app_version));
+            Log.d("VS", String.valueOf(newest_app_version));
             if(app_version_code < min_app_version) {
                 AlertDialog d = new AlertDialog.Builder(MainActivity.this)
                         .setCancelable(false)
@@ -493,6 +498,8 @@ public class MainActivity extends AppCompatActivity {
                                             su.putString("Username", username);
                                             su.putString("Password", password);
                                             su.putString("AccState", acc_state);
+                                            //Nutzername im NavigationDrawer eintragen
+                                            header_data.setText(res.getString(R.string.logged_in_as) + " " + username);
                                             //Dialog anzeigen
                                             String output = acc_state.length() == 1 ? res.getString(R.string.account_blocked_m) : acc_state.substring(1);
                                             AlertDialog d = new AlertDialog.Builder(MainActivity.this)

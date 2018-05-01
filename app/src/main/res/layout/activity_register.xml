@@ -72,7 +72,6 @@
             android:layout_height="wrap_content"
             android:text="@string/register"
             android:layout_alignParentBottom="true"
-            android:textColor="@color/colorPrimary"
             android:enabled="false"/>
 
     </RelativeLayout>

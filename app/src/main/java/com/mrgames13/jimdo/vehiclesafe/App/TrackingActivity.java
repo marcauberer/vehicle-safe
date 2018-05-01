@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.wifi.WifiManager;
@@ -38,6 +39,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.mrgames13.jimdo.vehiclesafe.CommonObjects.Broadcast;
 import com.mrgames13.jimdo.vehiclesafe.CommonObjects.Device;
 import com.mrgames13.jimdo.vehiclesafe.HelpClasses.Constants;
@@ -45,6 +47,8 @@ import com.mrgames13.jimdo.vehiclesafe.R;
 import com.mrgames13.jimdo.vehiclesafe.Utils.ServerMessagingUtils;
 import com.mrgames13.jimdo.vehiclesafe.Utils.StorageUtils;
 import com.mrgames13.jimdo.vehiclesafe.Utils.Tools;
+
+import java.util.ArrayList;
 
 public class TrackingActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, LocationListener {
 
@@ -58,19 +62,22 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
     private ServerMessagingUtils smu;
     private GoogleMap googleMap;
     private GoogleApiClient googleApiClient;
-    private LocationRequest locationRequest;
-    private Marker ownLocationMarker;
-    private Marker deviceLocationMarker;
-    private LatLng ownLocation;
-    private LatLng deviceLocation;
     private Device device;
+    private LocationRequest locationRequest;
+    private LatLng ownPosition;
+    private LatLng devicePosition;
+    private Marker ownPositionMarker;
+    private Marker devicePositionMarker;
     private Circle accuracy_circle;
     private LocationManager locManager;
     private Handler h;
     private Snackbar snackbar;
     private Broadcast last_broadcast;
+    private ArrayList<Broadcast> broadcast_history;
+    private ArrayList<Marker> history_markers = new ArrayList<>();
 
     //Variablen
+    private boolean history_show;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,6 +197,9 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
             goToOwnLocation();
         } else if (id == R.id.action_center_device_pos) {
             goToDeviceLocation();
+        } else if (id == R.id.action_show_hide_history) {
+            history_show = !history_show;
+            updateMode();
         } else if (id == R.id.action_maptype_normal) {
             googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         } else if (id == R.id.action_maptype_terrain) {
@@ -207,43 +217,62 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
         mapFragment.getMapAsync(this);
     }
 
-    private void setDeviceLocation(Broadcast last_broadcast) {
-        deviceLocation = new LatLng(last_broadcast.getLatitude(), last_broadcast.getLongitude());
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(deviceLocation, 15));
+    private void setDevicePosition(Broadcast last_broadcast) {
+        devicePosition = new LatLng(last_broadcast.getLatitude(), last_broadcast.getLongitude());
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(devicePosition, 15));
 
-        if (deviceLocationMarker != null) {
-            deviceLocationMarker.setPosition(deviceLocation);
-            deviceLocationMarker.setSnippet(last_broadcast.getTimeStampString());
+        if(devicePositionMarker != null) {
+            devicePositionMarker.setPosition(devicePosition);
+            devicePositionMarker.setSnippet(last_broadcast.getTimeStampString());
         } else {
             MarkerOptions opts = new MarkerOptions()
                     .title(device.getName())
                     .snippet(last_broadcast.getTimeStampString())
-                    .position(deviceLocation);
-            deviceLocationMarker = googleMap.addMarker(opts);
-        }
-
-        if(deviceLocationMarker.isInfoWindowShown()) {
-            deviceLocationMarker.hideInfoWindow();
-            deviceLocationMarker.showInfoWindow();
+                    .position(devicePosition);
+            devicePositionMarker = googleMap.addMarker(opts);
         }
     }
 
-    private void setOwnLocation(final Location loc) {
-        ownLocation = new LatLng(loc.getLatitude(), loc.getLongitude());
+    private void drawHistory(ArrayList<Broadcast> history) {
+        PolylineOptions options = new PolylineOptions();
+        options.color(Color.CYAN);
+        options.width(5);
+        options.visible(true);
 
-        if (ownLocationMarker != null) {
-            ownLocationMarker.setPosition(ownLocation);
-            ownLocationMarker.setSnippet(String.valueOf(ownLocation.latitude) + ", " + String.valueOf(ownLocation.longitude));
+        history_markers.clear();
+        for(Broadcast b : history) {
+            LatLng current_loc = new LatLng(b.getLatitude(), b.getLongitude());
+            options.add(new LatLng(b.getLatitude(), b.getLongitude()));
+            googleMap.addPolyline(options);
+
+            MarkerOptions opts = new MarkerOptions()
+                    .title(device.getName())
+                    .snippet(b.getTimeStampString())
+                    .icon(b.getTimeStampLong() == history.get(history.size() -1).getTimeStampLong() ? BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED) : BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
+                    .flat(true)
+                    .position(current_loc);
+            history_markers.add(googleMap.addMarker(opts));
+        }
+    }
+
+    private void setOwnPosition(final Location loc) {
+        ownPosition = new LatLng(loc.getLatitude(), loc.getLongitude());
+
+        if(ownPositionMarker != null) {
+            ownPositionMarker.setVisible(true);
+            ownPositionMarker.setPosition(ownPosition);
+            ownPositionMarker.setSnippet(String.valueOf(ownPosition.latitude) + ", " + String.valueOf(ownPosition.longitude));
         } else {
             MarkerOptions opts = new MarkerOptions()
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                     .title(res.getString(R.string.own_location))
-                    .snippet(String.valueOf(ownLocation.latitude) + ", " + String.valueOf(ownLocation.longitude))
-                    .position(ownLocation);
-            ownLocationMarker = googleMap.addMarker(opts);
+                    .snippet(String.valueOf(ownPosition.latitude) + ", " + String.valueOf(ownPosition.longitude))
+                    .position(ownPosition);
+            ownPositionMarker = googleMap.addMarker(opts);
         }
+
         if (accuracy_circle != null) {
-            accuracy_circle.setCenter(ownLocation);
+            accuracy_circle.setCenter(ownPosition);
 
             ValueAnimator anim = ValueAnimator.ofFloat(Float.valueOf(String.valueOf(accuracy_circle.getRadius())), loc.getAccuracy());
             anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -257,7 +286,7 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
             anim.start();
         } else {
             CircleOptions options = new CircleOptions()
-                    .center(ownLocation)
+                    .center(ownPosition)
                     .radius(loc.getAccuracy())
                     .fillColor(0x330000FF)
                     .strokeColor(0x550000FF)
@@ -267,11 +296,11 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
     private void goToOwnLocation() {
-        if (ownLocation != null) googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ownLocation, 15));
+        if (ownPosition != null) googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ownPosition, 15));
     }
 
     private void goToDeviceLocation() {
-        if (deviceLocation != null) googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(deviceLocation, 15));
+        if (devicePosition != null) googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(devicePosition, 15));
     }
 
     @SuppressLint("MissingPermission")
@@ -343,15 +372,25 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                 .build();
         googleApiClient.connect();
 
-        setDeviceLocation(last_broadcast);
+        setDevicePosition(last_broadcast);
     }
 
     @Override
     public void onLocationChanged(Location loc) {
         if(loc == null) {
-            Toast.makeText(this, "Can't get current location", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, res.getString(R.string.error), Toast.LENGTH_SHORT).show();
         } else {
-            setOwnLocation(loc);
+            setOwnPosition(loc);
+        }
+    }
+
+    private void updateMode() {
+        if(history_show) {
+            ownPositionMarker.setVisible(false);
+            broadcast_history = su.getBroadcastHistory(device.getDeviceID());
+            drawHistory(broadcast_history);
+        } else {
+            setDevicePosition(last_broadcast);
         }
     }
 
@@ -360,7 +399,7 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                setDeviceLocation(broadcast);
+                setDevicePosition(broadcast);
             }
         });
     }
